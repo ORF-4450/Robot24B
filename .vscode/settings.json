@@ -26,5 +26,7 @@
     },
   ],
   "java.test.defaultConfig": "WPIlibUnitTests",
-  "wpilib.selectDefaultSimulateExtension": false
+  "wpilib.selectDefaultSimulateExtension": false,
+  "wpilib.skipSelectSimulateExtension": true,
+  "editor.fontSize": 13
 }

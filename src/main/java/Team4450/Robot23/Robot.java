@@ -2,9 +2,10 @@
 package Team4450.Robot23;
 
 import static Team4450.Robot23.Constants.*;
-
 import Team4450.Lib.*;
+// Following import selects our customized version of TimedRobot.
 import Team4450.Robot23.wpilib.TimedRobot;
+
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.RobotBase;
@@ -92,17 +93,12 @@ public class Robot extends TimedRobot
       if (RobotBase.isSimulation()) Util.consoleLog("Simulated Robot");
       if (RobotBase.isReal()) Util.consoleLog("Real Robot");
 
-      // Eliminate LW overhead when not using it. Comment out to enable LW operation during
-      // auto & teleop modes. Always works in test mode.
-      // This now the default with 2023 WPILib.
-      //LiveWindow.disableAllTelemetry();
-
       // Create SendableVersion object so it can be sent to the dashboard and also
       // log some of it's information.
 
       SendableVersion.INSTANCE.init(PROGRAM_NAME);
 
-      // Note: for 2022, under simulation, this information may not be not correct.
+      // Note: under simulation, this information may not be not correct.
       Util.consoleLog("%s compiled by %s at %s (branch=%s, commit=%s)", SendableVersion.INSTANCE.getProgramVersion(),
           SendableVersion.INSTANCE.getUser(), SendableVersion.INSTANCE.getTime(), SendableVersion.INSTANCE.getBranch(),
           SendableVersion.INSTANCE.getCommit());
@@ -130,16 +126,12 @@ public class Robot extends TimedRobot
 
       SendableVersion.INSTANCE.updateDashBoard();
 
-      //SmartDashboard.putData("Version", SendableVersion.INSTANCE);
-
       // Instantiate our RobotContainer class. This will perform all necessary setup of the various
       // subsystems, commands and other items that are needed to to be ready before we start doing
       // either autonomous or teleop modes.
 
       robotContainer = new RobotContainer();
-
-      //SendableVersion.INSTANCE.removeSendable();
-      
+            
     } catch (Exception e) {
       Util.logException(e);
       endCompetition();
