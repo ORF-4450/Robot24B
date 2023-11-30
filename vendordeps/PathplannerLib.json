@@ -29,7 +29,9 @@
                 "windowsx86-64",
                 "linuxx86-64",
                 "osxuniversal",
-                "linuxathena"
+                "linuxathena",
+                "linuxarm32",
+                "linuxarm64"
             ]
         }
     ]
