@@ -266,7 +266,7 @@ public class DriveBase extends SubsystemBase
 
   /**
    * Get gyro yaw from the angle of the robot at last gyro reset.
-   * @return Gyro yaw in radians. + is left of zero (ccw) - is right (cw).
+   * @return Rotation2D containing Gyro yaw in radians. + is left of zero (ccw) - is right (cw).
    */
   public Rotation2d getGyroRotation2d() 
   {
