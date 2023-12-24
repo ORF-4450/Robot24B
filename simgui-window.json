@@ -34,7 +34,7 @@
     },
     "###/SmartDashboard/Field2d": {
       "Collapsed": "0",
-      "Pos": "602,29",
+      "Pos": "603,29",
       "Size": "1011,550"
     },
     "###/SmartDashboard/Gyro2": {
@@ -55,7 +55,7 @@
     "###Joysticks": {
       "Collapsed": "0",
       "Pos": "285,662",
-      "Size": "1156,91"
+      "Size": "1156,316"
     },
     "###NetworkTables": {
       "Collapsed": "0",
@@ -75,7 +75,7 @@
     "###Timing": {
       "Collapsed": "0",
       "Pos": "7,224",
-      "Size": "197,273"
+      "Size": "197,302"
     },
     "Debug##Default": {
       "Collapsed": "0",
