@@ -182,11 +182,11 @@ public class DriveBase extends SubsystemBase
                     .withPosition(0, 0),
             // This is the gearing configuration
             Mk4iSwerveModuleHelper.GearRatio.T14,
-            // This is the ID of the drive motor
+            // This is the ID of the drive motor SparkMax
             FRONT_LEFT_MODULE_DRIVE_MOTOR,
-            // This is the ID of the steer motor
+            // This is the ID of the steer motor SpakrMax
             FRONT_LEFT_MODULE_STEER_MOTOR,
-            // This is the ID of the steer encoder
+            // This is the ID of the steer encoder SparkMax
             FRONT_LEFT_MODULE_STEER_ENCODER,
             // This is how much the steer encoder is offset from true zero (In our case, zero is facing straight forward)
             FRONT_LEFT_MODULE_STEER_OFFSET
