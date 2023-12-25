@@ -58,9 +58,12 @@ public class DriveBase extends SubsystemBase
    * <p>
    * This is a estimate of how fast the robot should be able to drive in a straight line.
    */
-  public static final double MAX_VELOCITY_METERS_PER_SECOND = 5676.0 / 60.0 *
-          SdsModuleConfigurations.MAXSWERVE_T14.getDriveReduction() *
-          SdsModuleConfigurations.MAXSWERVE_T14.getWheelDiameter() * Math.PI;
+  // public static final double MAX_VELOCITY_METERS_PER_SECOND = 5676.0 / 60.0 *
+  //         SdsModuleConfigurations.MAXSWERVE_T14.getDriveReduction() *
+  //         SdsModuleConfigurations.MAXSWERVE_T14.getWheelDiameter() * Math.PI;
+  public static final double MAX_VELOCITY_METERS_PER_SECOND = (5676.0 / 60.0 *
+          (SdsModuleConfigurations.MAXSWERVE_T14.getWheelDiameter() * Math.PI)) /
+          SdsModuleConfigurations.MAXSWERVE_T14.getDriveReduction();
 
   /**
    * The maximum angular velocity of the robot in radians per second.
@@ -119,7 +122,7 @@ public class DriveBase extends SubsystemBase
 
   public DriveBase() 
   {
-    Util.consoleLog("max vel=%.2f", MAX_VELOCITY_METERS_PER_SECOND);
+    Util.consoleLog("max vel=%.2f m/s", MAX_VELOCITY_METERS_PER_SECOND);
 
     // This thread will wait a bit and then reset the gyro while this constructor
     // continues to run. We do this because we have to wait a bit to reset the
