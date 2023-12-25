@@ -48,22 +48,20 @@ public class DriveBase extends SubsystemBase
   //  Measure the drivetrain's maximum velocity or calculate the theoretical.
   //  The formula for calculating the theoretical maximum velocity is:
   //   <Motor free speed RPM> / 60 * <Drive reduction> * <Wheel diameter meters> * pi
+  //  Note: for this formula to work as shown, the gear reduction is 1 / gear-ratio.
   //  By default this value is setup for a Mk3 standard module using Falcon500s to drive.
   //  An example of this constant for a Mk4 L2 module with NEOs to drive is:
-  //   5880.0 / 60.0 / SdsModuleConfigurations.MK4_L2.getDriveReduction() * 
+  //   5880.0 / 60.0 * SdsModuleConfigurations.MK4_L2.getDriveReduction() * 
   //                   SdsModuleConfigurations.MK4_L2.getWheelDiameter() * Math.PI
 
   /**
    * The maximum velocity of the robot in meters per second.
    * <p>
-   * This is a estimate of how fast the robot should be able to drive in a straight line.
+   * This is an estimate of how fast the robot should be able to drive in a straight line.
    */
-  // public static final double MAX_VELOCITY_METERS_PER_SECOND = 5676.0 / 60.0 *
-  //         SdsModuleConfigurations.MAXSWERVE_T14.getDriveReduction() *
-  //         SdsModuleConfigurations.MAXSWERVE_T14.getWheelDiameter() * Math.PI;
-  public static final double MAX_VELOCITY_METERS_PER_SECOND = (5676.0 / 60.0 *
-          (SdsModuleConfigurations.MAXSWERVE_T14.getWheelDiameter() * Math.PI)) /
-          SdsModuleConfigurations.MAXSWERVE_T14.getDriveReduction();
+  public static final double MAX_VELOCITY_METERS_PER_SECOND = 5676.0 / 60.0 *
+          SdsModuleConfigurations.MAXSWERVE_T14.getDriveReduction() *
+          SdsModuleConfigurations.MAXSWERVE_T14.getWheelDiameter() * Math.PI;
 
   /**
    * The maximum angular velocity of the robot in radians per second.
