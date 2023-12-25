@@ -119,7 +119,7 @@ public class DriveBase extends SubsystemBase
 
   public DriveBase() 
   {
-    Util.consoleLog();
+    Util.consoleLog("max vel=%.2f", MAX_VELOCITY_METERS_PER_SECOND);
 
     // This thread will wait a bit and then reset the gyro while this constructor
     // continues to run. We do this because we have to wait a bit to reset the
