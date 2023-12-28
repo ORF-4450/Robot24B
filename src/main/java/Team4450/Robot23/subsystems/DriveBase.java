@@ -5,9 +5,9 @@ import com.ctre.phoenix.unmanaged.Unmanaged;
 import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.REVPhysicsSim;
 
-import Team4450.Lib.Swerve.Mk4iSwerveModuleHelper;
+import Team4450.Lib.Swerve.MaxSwerveModuleHelper;
 import Team4450.Lib.Swerve.ModuleConfiguration;
-import Team4450.Lib.Swerve.SdsModuleConfigurations;
+import Team4450.Lib.Swerve.RevModuleConfigurations;
 import Team4450.Lib.Swerve.SwerveModule;
 import Team4450.Lib.Swerve.ModuleConfiguration.ModulePosition;
 import Team4450.Robot23.RobotContainer;
@@ -60,8 +60,8 @@ public class DriveBase extends SubsystemBase
    * This is an estimate of how fast the robot should be able to drive in a straight line.
    */
   public static final double MAX_VELOCITY_METERS_PER_SECOND = 5676.0 / 60.0 *
-          SdsModuleConfigurations.MAXSWERVE_T14.getDriveReduction() *
-          SdsModuleConfigurations.MAXSWERVE_T14.getWheelDiameter() * Math.PI;
+          RevModuleConfigurations.MAXSWERVE_T14.getDriveReduction() *
+          RevModuleConfigurations.MAXSWERVE_T14.getWheelDiameter() * Math.PI;
 
   /**
    * The maximum angular velocity of the robot in radians per second.
@@ -148,25 +148,24 @@ public class DriveBase extends SubsystemBase
 
     SmartDashboard.putData("Field2d", field2d);
 
-    // There are 4 methods you can call to create your swerve modules.
-    // The method you use depends on what motors you are using.
+    // There are serverl methods you can call to create your swerve modules.
+    // The method you use depends on what modules and motors you are using.
     //
     // Mk4iSwerveModuleHelper.createFalcon500(...)
-    //   Your module has two Falcon 500s on it. One for steering and one for driving.
+    //   Your SDS module has two Falcon 500s on it. One for steering and one for driving.
     //
     // Mk4iSwerveModuleHelper.createNeo(...)
-    //   Your module has two NEOs on it. One for steering and one for driving.
+    //   Your SDS module has two NEOs on it. One for steering and one for driving.
     //
-    // Mk4iSwerveModuleHelper.createNeo550(...)
-    //   Your module has NEOs for driving and NEO550s for steering (MaxSwerve).
+    // MaxSwerveModuleHelper.createNeo550(...)
+    //   YourMax Swerve module has NEOs for driving and NEO550s for steering (MaxSwerve).
     //
     // Mk4iSwerveModuleHelper.createFalcon500Neo(...)
-    //   Your module has a Falcon 500 and a NEO on it. The Falcon 500 is for driving and the NEO is for steering.
+    //   Your SDS module has a Falcon 500 and a NEO on it. The Falcon 500 is for driving and the NEO is for steering.
     //
     // Mk4iSwerveModuleHelper.createNeoFalcon500(...)
-    //   Your module has a NEO and a Falcon 500 on it. The NEO is for driving and the Falcon 500 is for steering.
+    //   Your SDS module has a NEO and a Falcon 500 on it. The NEO is for driving and the Falcon 500 is for steering.
     //
-    // Similar helpers also exist for Mk4 modules using the Mk4SwerveModuleHelper class.
 
     // NOTE: By default the swerve modules are created with the default Mk4ModuleConfiguration object.
     // The Mk4ModuleConfiguration object contains all of the configurable tuning parameters available for
@@ -175,14 +174,14 @@ public class DriveBase extends SubsystemBase
     // to each of the createNeo calls below, adding the configuration object just ahead of the GearRatio
     // parameter. The default Mk4ModuleConfiguration is currently customized for Neos.
     
-    m_frontLeftModule = Mk4iSwerveModuleHelper.createNeo550(
+    m_frontLeftModule = MaxSwerveModuleHelper.createNeo550(
             ModulePosition.FL,
             // This parameter is optional, but will allow you to see the current state of the module on the dashboard.
             tab.getLayout("Front Left Module", BuiltInLayouts.kGrid)
                     .withSize(2, ModuleConfiguration.shuffleBoardRows) // 2,
                     .withPosition(0, 0),
             // This is the gearing configuration
-            Mk4iSwerveModuleHelper.GearRatio.T14,
+            MaxSwerveModuleHelper.GearRatio.T14,
             // This is the ID of the drive motor SparkMax
             FRONT_LEFT_MODULE_DRIVE_MOTOR,
             // This is the ID of the steer motor SpakrMax
@@ -198,12 +197,12 @@ public class DriveBase extends SubsystemBase
     
     // We will do the same for the other modules
 
-    m_frontRightModule = Mk4iSwerveModuleHelper.createNeo550(
+    m_frontRightModule = MaxSwerveModuleHelper.createNeo550(
             ModulePosition.FR,
             tab.getLayout("Front Right Module", BuiltInLayouts.kGrid)
                     .withSize(2, ModuleConfiguration.shuffleBoardRows)
                     .withPosition(2, 0), // 2, 0
-            Mk4iSwerveModuleHelper.GearRatio.T14,
+            MaxSwerveModuleHelper.GearRatio.T14,
             FRONT_RIGHT_MODULE_DRIVE_MOTOR,
             FRONT_RIGHT_MODULE_STEER_MOTOR,
             FRONT_RIGHT_MODULE_STEER_ENCODER,
@@ -212,12 +211,12 @@ public class DriveBase extends SubsystemBase
 
     m_frontRightModule.setTranslation2d(new Translation2d(DRIVETRAIN_TRACKWIDTH_METERS / 2.0, -DRIVETRAIN_WHEELBASE_METERS / 2.0));
     
-    m_backLeftModule = Mk4iSwerveModuleHelper.createNeo550(
+    m_backLeftModule = MaxSwerveModuleHelper.createNeo550(
             ModulePosition.BL,
             tab.getLayout("Back Left Module", BuiltInLayouts.kGrid)
                     .withSize(2, ModuleConfiguration.shuffleBoardRows) // 2,4
                     .withPosition(4, 0),  // 4, 0
-            Mk4iSwerveModuleHelper.GearRatio.T14,
+            MaxSwerveModuleHelper.GearRatio.T14,
             BACK_LEFT_MODULE_DRIVE_MOTOR,
             BACK_LEFT_MODULE_STEER_MOTOR,
             BACK_LEFT_MODULE_STEER_ENCODER,
@@ -226,12 +225,12 @@ public class DriveBase extends SubsystemBase
 
     m_backLeftModule.setTranslation2d(new Translation2d(-DRIVETRAIN_TRACKWIDTH_METERS / 2.0, DRIVETRAIN_WHEELBASE_METERS / 2.0));
 
-    m_backRightModule = Mk4iSwerveModuleHelper.createNeo550(
+    m_backRightModule = MaxSwerveModuleHelper.createNeo550(
             ModulePosition.BR,
             tab.getLayout("Back Right Module", BuiltInLayouts.kGrid)
                     .withSize(2, ModuleConfiguration.shuffleBoardRows) // 2,4
                     .withPosition(6, 0),  // 6,0
-            Mk4iSwerveModuleHelper.GearRatio.T14,
+            MaxSwerveModuleHelper.GearRatio.T14,
             BACK_RIGHT_MODULE_DRIVE_MOTOR,
             BACK_RIGHT_MODULE_STEER_MOTOR,
             BACK_RIGHT_MODULE_STEER_ENCODER,
@@ -542,7 +541,7 @@ public class DriveBase extends SubsystemBase
     lastPose = pose;
 
     m_navx.reset();
-  }  
+  } 
 
   /**
    * Called on every scheduler loop when in simulation.
