@@ -1,17 +1,11 @@
 
 package Team4450.Robot24;
 
-import java.util.Arrays;
 import java.util.Properties;
 
 import Team4450.Lib.Util;
-import edu.wpi.first.apriltag.AprilTag;
-import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Rotation3d;
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 
 /**
@@ -24,7 +18,7 @@ import edu.wpi.first.wpilibj.DriverStation;
  */
 public final class Constants
 {
-	public static String		PROGRAM_NAME = "RAC24B4-MS-12.31.23-1";
+	public static String		PROGRAM_NAME = "RAC24-MS-01.08.24-1";
 
 	public static Robot			robot;
 

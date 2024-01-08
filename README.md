@@ -16,6 +16,12 @@ Operates the robot "Prometheus" for FRC game "Charged Up".
 ### If RobotLib gets an update:
 1) download the RobotLib.json file from the RobotLib Github repo and drop it into the vendordeps folder inside the project folder. Build the project.
 ****************************************************************************************************************
+Version 24.MS
+
+*   Update to 2024 WPILib 24.1.1 release.
+
+R. Corn, January 8 2024
+
 Version 24.B4-MS
 
 *   Update 2023 project to 2024 Beta 4.
