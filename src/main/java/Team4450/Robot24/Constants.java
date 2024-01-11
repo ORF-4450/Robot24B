@@ -18,7 +18,7 @@ import edu.wpi.first.wpilibj.DriverStation;
  */
 public final class Constants
 {
-	public static String		PROGRAM_NAME = "RAC24-MS-01.08.24-1";
+	public static String		PROGRAM_NAME = "RAC24-MS-01.11.24-1";
 
 	public static Robot			robot;
 
@@ -109,7 +109,11 @@ public final class Constants
 
     public static final int FRONT_LEFT_MODULE_DRIVE_MOTOR = 10; //  Set left front drive motor ID
     public static final int FRONT_LEFT_MODULE_STEER_MOTOR = 11; //  Set left front steer motor ID
+    // Note: Steer encoder port is same as steer motor port as the through bore encoder used on
+    // MaxSwerve as the absolute encoder is connected to the steer SparkMax.
     public static final int FRONT_LEFT_MODULE_STEER_ENCODER = 11; //  Set left front steer encoder ID
+    // Note: Steer offset is configured directly into the steerinng SparkMax on MaxSwerve so this
+    // offset is not used and should be zero.
     public static final double FRONT_LEFT_MODULE_STEER_OFFSET = 0; //-Math.toRadians(336.621); //  Measure and set left front steer offset
 
     public static final int FRONT_RIGHT_MODULE_DRIVE_MOTOR = 7; //  Set front right drive motor ID

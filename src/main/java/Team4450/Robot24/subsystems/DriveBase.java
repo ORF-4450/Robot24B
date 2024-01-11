@@ -184,6 +184,7 @@ public class DriveBase extends SubsystemBase
             // This is the ID of the steer encoder SparkMax
             FRONT_LEFT_MODULE_STEER_ENCODER,
             // This is how much the steer encoder is offset from true zero (In our case, zero is facing straight forward)
+            // This is not used for MaxSwerve and should be zero.
             FRONT_LEFT_MODULE_STEER_OFFSET
     );
 

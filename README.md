@@ -19,8 +19,10 @@ Operates the robot "Prometheus" for FRC game "Charged Up".
 Version 24.MS
 
 *   Update to 2024 WPILib 24.1.1 release.
+*   Update all vendordeps to 2024 release except PathPlanner.
+*   Required RobotLib 4.8.0 or later.
 
-R. Corn, January 8 2024
+R. Corn, January 11 2024
 
 Version 24.B4-MS
 
