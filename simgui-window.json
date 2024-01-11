@@ -19,6 +19,12 @@
       "Column 0  Width": "367",
       "Column 1  Width": "635",
       "RefScale": "19"
+    },
+    "0xE56EC1C2,4": {
+      "Column 0  Weight": "1.0000",
+      "Column 1  Weight": "1.0000",
+      "Column 2  Weight": "1.0000",
+      "Column 3  Weight": "1.0000"
     }
   },
   "Window": {

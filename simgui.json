@@ -104,6 +104,11 @@
     }
   },
   "NetworkTables Info": {
-    "visible": true
+    "Connections": {
+      "open": true
+    },
+    "Server": {
+      "open": true
+    }
   }
 }

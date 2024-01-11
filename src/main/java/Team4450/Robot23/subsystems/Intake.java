@@ -57,6 +57,8 @@ public class Intake extends SubsystemBase
     
             motor.set(power);
         }
+
+        //Util.consoleLog("motor power=%.2f", motor.get());
     }
     
     /**
@@ -76,6 +78,8 @@ public class Intake extends SubsystemBase
         motor.set(power);
 
         lastPower = power;
+
+        Util.consoleLog("set power=%.2f", power);
     }
 
     public void dropGamePiece()
@@ -97,7 +101,10 @@ public class Intake extends SubsystemBase
 
     public void stop()
     {
+        Util.consoleLog();
+
         motor.stopMotor();
+        motor.set(0);
     }
 
     /**
