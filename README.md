@@ -8,7 +8,7 @@ Operates the robot "Prometheus" for FRC game "Charged Up".
 
 ----------------------------------------------------------------------------
 ## Instructions to setup development environment for VS Code
-1) Follow the instructions [here](https://wpilib.screenstepslive.com/s/currentCS/m/java) to setup the JDK, Visual Studio Code, the FRC plugins and tools. Do not install the C++ portion. You do not need the FRC Update Suite to compile code.
+1) Follow the instructions [here](https://docs.wpilib.org/en/stable/docs/zero-to-robot/step-2/index.html) to setup the JDK, Visual Studio Code, the FRC plugins and tools. Do not install the C++ portion. You do not need the FRC Update Suite to compile code.
 2) Clone this repository to local folder.
 3) Open that folder in Visual Studio Code.
 4) Build the project using the build project command from the WPILib commands list.
@@ -20,7 +20,7 @@ Version 24.MS
 
 *   Update to 2024 WPILib 24.1.1 release.
 *   Update all vendordeps to 2024 release except PathPlanner.
-*   Required RobotLib 4.8.0 or later.
+*   Requires RobotLib 4.8.0 or later.
 
 R. Corn, January 11 2024
 

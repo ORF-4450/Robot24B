@@ -348,7 +348,7 @@ public class DriveBase extends SubsystemBase
    */
   public void setSpeeds(ChassisSpeeds speeds)
   {
-    Util.consoleLog("vxt=%.4f  vys=%.4f  vr=%.4f", speeds.vxMetersPerSecond, speeds.vyMetersPerSecond, 
+    Util.consoleLog("vx=%.4f  vy=%.4f  vr=%.4f", speeds.vxMetersPerSecond, speeds.vyMetersPerSecond, 
                                                    speeds.omegaRadiansPerSecond);
     
     // Again with the need to invert rotation under sim for some reason...
@@ -436,7 +436,7 @@ public class DriveBase extends SubsystemBase
     // movements only in the X or Y direction. It will not be correct
     // for diagonal moves. It also does not track rotations as distance
     // traveled as technically a rotation is not moving a distance. This
-    // is all a kludge to support the simple autonomus functions.
+    // is all a kludge to support the simple autonomous functions.
 
     Pose2d currentPose = m_odometry.getEstimatedPosition();
 
@@ -484,7 +484,7 @@ public class DriveBase extends SubsystemBase
   }
 
   /**
-   * Rotates the module icons on the field display so indicate where
+   * Rotates the module icons on the field display to indicate where
    * the wheel is pointing.
    */
   private void setField2dModulePoses()

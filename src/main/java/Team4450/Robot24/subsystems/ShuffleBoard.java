@@ -89,10 +89,6 @@ public class ShuffleBoard extends SubsystemBase
         SmartDashboard.putNumber("AirPressure", 0);
         SmartDashboard.putBoolean("TargetLocked", false);
         SmartDashboard.putBoolean("Autonomous Active", false);
-        SmartDashboard.putBoolean("DropArm", false);
-        SmartDashboard.putBoolean("RetractArm", false);
-        SmartDashboard.putBoolean("OpenClaw", false);
-        SmartDashboard.putBoolean("RaiseArm", false);
     }
 
     /**
