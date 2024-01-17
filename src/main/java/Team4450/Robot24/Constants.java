@@ -18,7 +18,7 @@ import edu.wpi.first.wpilibj.DriverStation;
  */
 public final class Constants
 {
-	public static String		PROGRAM_NAME = "RAC24-MS-01.14.24-1";
+	public static String		PROGRAM_NAME = "RAC24-MS-01.17.24-1";
 
 	public static Robot			robot;
 
@@ -32,10 +32,6 @@ public final class Constants
 	    
 	// Non-drive base motor controller port assignments
 
-    public static final int     CLAW_MOTOR = 150;
-    public static final int     INTAKE_MOTOR = 15;
-    public static final int     WINCH_MOTOR = 14;
-    public static final int     ARM_MOTOR = 13;
     public static final int     REV_PDB = 20;
 	
 	// GamePad port assignments.
@@ -45,10 +41,6 @@ public final class Constants
 	//public static final int		COMPRESSOR = 0;
 
 	// Digital Input port assignments. Encoder takes 2 ports.
-    public static final int     WINCH_SWITCH_LOWER = 0;
-    public static final int     WINCH_SWITCH_UPPER = 1;
-    public static final int     ARM_SWITCH = 2;
-    public static final int     CLAW_SWITCH = 3;     
 	  
 	// Analog Input port assignments.
 	
@@ -77,7 +69,7 @@ public final class Constants
     // The maximum voltage that will be delivered to the drive motors. This can be reduced to cap the 
     // robot's maximum speed. Typically, this is useful during testing of the robot.
    
-	public static final double MAX_VOLTAGE = 8.0;
+	public static final double MAX_VOLTAGE = 6.0;
 
 	public static final double  THROTTLE_DEADBAND = .05;
     public static final double  ROTATION_DEADBAND = .05;
@@ -97,39 +89,39 @@ public final class Constants
      * The left-to-right distance between the drivetrain wheels
      * Should be measured from center to center.
      */
-    public static final double DRIVETRAIN_TRACKWIDTH_METERS = Util.inchesToMeters(18.75); //  Measure and set trackwidth
+    public static final double DRIVETRAIN_TRACKWIDTH_METERS = Util.inchesToMeters(29); //  Measure and set trackwidth
    
     /**
      * The front-to-back distance between the drivetrain wheels.
      * Should be measured from center to center.
      */
-    public static final double DRIVETRAIN_WHEELBASE_METERS = Util.inchesToMeters(30.75); // Measure and set wheelbase
+    public static final double DRIVETRAIN_WHEELBASE_METERS = Util.inchesToMeters(29); // Measure and set wheelbase
 
     // Swerve Module motor controller & encoder port assignments and steering offsets.
 
-    public static final int FRONT_LEFT_MODULE_DRIVE_MOTOR = 10; //  Set left front drive motor ID
-    public static final int FRONT_LEFT_MODULE_STEER_MOTOR = 11; //  Set left front steer motor ID
+    public static final int FRONT_LEFT_MODULE_DRIVE_MOTOR = 1; //  Set left front drive motor ID
+    public static final int FRONT_LEFT_MODULE_STEER_MOTOR = 2; //  Set left front steer motor ID
     // Note: Steer encoder port is same as steer motor port as the through bore encoder used on
     // MaxSwerve as the absolute encoder is connected to the steer SparkMax.
-    public static final int FRONT_LEFT_MODULE_STEER_ENCODER = 11; //  Set left front steer encoder ID
+    public static final int FRONT_LEFT_MODULE_STEER_ENCODER = 2; //  Set left front steer encoder ID
     // Note: Steer offset is configured directly into the steerinng SparkMax on MaxSwerve so this
     // offset is not used and should be zero.
-    public static final double FRONT_LEFT_MODULE_STEER_OFFSET = 0; //-Math.toRadians(336.621); //  Measure and set left front steer offset
+    public static final double FRONT_LEFT_MODULE_STEER_OFFSET = -Math.PI / 2; //0; //-Math.toRadians(336.621); //  Measure and set left front steer offset
 
-    public static final int FRONT_RIGHT_MODULE_DRIVE_MOTOR = 7; //  Set front right drive motor ID
-    public static final int FRONT_RIGHT_MODULE_STEER_MOTOR = 8; //  Set front right steer motor ID
-    public static final int FRONT_RIGHT_MODULE_STEER_ENCODER = 8; //  Set front right steer encoder ID
+    public static final int FRONT_RIGHT_MODULE_DRIVE_MOTOR = 3; //  Set front right drive motor ID
+    public static final int FRONT_RIGHT_MODULE_STEER_MOTOR = 4; //  Set front right steer motor ID
+    public static final int FRONT_RIGHT_MODULE_STEER_ENCODER = 4; //  Set front right steer encoder ID
     public static final double FRONT_RIGHT_MODULE_STEER_OFFSET = 0; //-Math.toRadians(235.107); //  Measure and set front right steer offset
 
-    public static final int BACK_LEFT_MODULE_DRIVE_MOTOR = 4; //  Set back left drive motor ID
-    public static final int BACK_LEFT_MODULE_STEER_MOTOR = 5; //  Set back left steer motor ID
-    public static final int BACK_LEFT_MODULE_STEER_ENCODER = 5; //  Set back left steer encoder ID
-    public static final double BACK_LEFT_MODULE_STEER_OFFSET = 0; //-Math.toRadians(58.535); //  Measure and set back left steer offset
+    public static final int BACK_LEFT_MODULE_DRIVE_MOTOR = 5; //  Set back left drive motor ID
+    public static final int BACK_LEFT_MODULE_STEER_MOTOR = 6; //  Set back left steer motor ID
+    public static final int BACK_LEFT_MODULE_STEER_ENCODER = 6; //  Set back left steer encoder ID
+    public static final double BACK_LEFT_MODULE_STEER_OFFSET = Math.PI; //0; //-Math.toRadians(58.535); //  Measure and set back left steer offset
 
-    public static final int BACK_RIGHT_MODULE_DRIVE_MOTOR = 1; // Set back right module drive motor ID
-    public static final int BACK_RIGHT_MODULE_STEER_MOTOR = 2; //  Set back right module steer motor ID
-    public static final int BACK_RIGHT_MODULE_STEER_ENCODER = 2; //  Set back right steer encoder ID
-    public static final double BACK_RIGHT_MODULE_STEER_OFFSET = 0; //-Math.toRadians(121.201); //  Measure and set back right steer offset
+    public static final int BACK_RIGHT_MODULE_DRIVE_MOTOR = 7; // Set back right module drive motor ID
+    public static final int BACK_RIGHT_MODULE_STEER_MOTOR = 8; //  Set back right module steer motor ID
+    public static final int BACK_RIGHT_MODULE_STEER_ENCODER = 8; //  Set back right steer encoder ID
+    public static final double BACK_RIGHT_MODULE_STEER_OFFSET = Math.PI / 2; //0; //-Math.toRadians(121.201); //  Measure and set back right steer offset
     
 	// Use these values in PathWeaver for speed and acceleration.
     // Robot will go faster than this, more like 3 mps but this value tones down autonomous speed.

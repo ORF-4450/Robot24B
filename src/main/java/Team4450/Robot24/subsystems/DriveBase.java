@@ -766,7 +766,7 @@ public class DriveBase extends SubsystemBase
   }
 
   /**
-   * Set drive motor idle mode for each swerve module. Defaults to brake.
+   * Set drive motor idle mode for each swerve module. Defaults to coast.
    * @param on True to set idle mode to brake, false sets to coast.
    */
   public void setBrakeMode(boolean on) 
