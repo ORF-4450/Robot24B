@@ -232,7 +232,7 @@ public class Robot extends TimedRobot
 
     // Align wheels to start position.
 
-    RobotContainer.driveBase.setModulesToStartPosition();
+    //RobotContainer.driveBase.setModulesToStartPosition();
 
     isAligned = true;
     

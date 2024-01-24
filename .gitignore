@@ -165,6 +165,8 @@ Shooter Characterization/characterization-project/
 
 # Misc temp files
 logging/logging.*.*
+logs/*
+simgui*
 *.wpilog
 
 # Backups

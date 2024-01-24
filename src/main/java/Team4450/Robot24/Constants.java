@@ -56,8 +56,8 @@ public final class Constants
 	public static final int		LCD_9 = 9;	    // ShuffleBoard subsystem.
 	public static final int		LCD_10 = 10;	// ShuffleBoard subsystem.
 
-	// Default starting field position in meters for pose tracking.
-	public static final Pose2d	DEFAULT_STARTING_POSE = new Pose2d(0, 0, Rotation2d.fromDegrees(0));
+	// Default starting field position in meters for pose tracking. 2024 field.
+	public static final Pose2d	DEFAULT_STARTING_POSE = new Pose2d(1.665, 2.541, Rotation2d.fromDegrees(0));
 
     public static Pose2d[]      STARTING_POSES = new Pose2d[]
     {
@@ -124,7 +124,7 @@ public final class Constants
     public static final double BACK_RIGHT_MODULE_STEER_OFFSET = Math.PI / 2; //0; //-Math.toRadians(121.201); //  Measure and set back right steer offset
     
 	// Use these values in PathWeaver for speed and acceleration.
-    // Robot will go faster than this, more like 3 mps but this value tones down autonomous speed.
+    // Robot will go faster than this, more like 4 mps but this value tones down autonomous speed.
 
     public static final double  MAX_WHEEL_SPEED = 3.0;     // Meters per second.
     public static final double  MAX_WHEEL_ACCEL = 3.0;     // Meters per second per second.
