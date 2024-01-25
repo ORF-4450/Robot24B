@@ -18,6 +18,8 @@
       "/LiveWindow/Ungrouped/navX-Sensor[4]": "Gyro",
       "/LiveWindow/Winch": "Subsystem",
       "/LiveWindow/Winch/UpperLimitSwitch": "Digital Input",
+      "/SmartDashboard/AprilTag PID": "PIDController",
+      "/SmartDashboard/Auto Chooser": "String Chooser",
       "/SmartDashboard/Auto Program": "String Chooser",
       "/SmartDashboard/Field2d": "Field2d",
       "/SmartDashboard/Gyro2": "Gyro",
@@ -25,6 +27,11 @@
       "/SmartDashboard/Start Position": "String Chooser"
     },
     "windows": {
+      "/SmartDashboard/Auto Chooser": {
+        "window": {
+          "visible": true
+        }
+      },
       "/SmartDashboard/Auto Program": {
         "window": {
           "visible": true
@@ -32,22 +39,22 @@
       },
       "/SmartDashboard/Field2d": {
         "Robot": {
-          "length": 1.0667999982833862,
-          "width": 0.7620000243186951
+          "length": 0.7365999817848206,
+          "width": 0.7365999817848206
         },
         "Swerve Modules": {
           "image": "resources/swerve_module.png",
           "length": 0.4000000059604645,
           "width": 0.4000000059604645
         },
+        "bottom": 544,
+        "builtin": "2024 Crescendo",
         "height": 8.013679504394531,
-        "image": "resources/2023-field.png",
+        "left": 46,
+        "right": 1088,
+        "top": 36,
+        "units": "inches",
         "width": 16.541748046875,
-        "window": {
-          "visible": true
-        }
-      },
-      "/SmartDashboard/Start Position": {
         "window": {
           "visible": true
         }
@@ -96,6 +103,12 @@
         "open": true
       },
       "SmartDashboard": {
+        "Auto Chooser": {
+          "open": true,
+          "string[]##v_/SmartDashboard/Auto Chooser/options": {
+            "open": true
+          }
+        },
         "Gyro2": {
           "open": true
         },
@@ -108,5 +121,8 @@
         "open": true
       }
     }
+  },
+  "NetworkTables Info": {
+    "visible": true
   }
 }

@@ -11,6 +11,7 @@ import java.util.function.DoubleSupplier;
 
 import Team4450.Lib.LCD;
 import Team4450.Lib.Util;
+import Team4450.Robot24.Constants;
 import Team4450.Robot24.subsystems.DriveBase;
 
 public class DriveCommand extends Command 
@@ -22,9 +23,9 @@ public class DriveCommand extends Command
     private final DoubleSupplier rotationSupplier;
     private final XboxController controller;
     
-    private final SlewRateLimiter slewX = new SlewRateLimiter(THROTTLE_SLEW);
-    private final SlewRateLimiter slewY = new SlewRateLimiter(THROTTLE_SLEW);
-    private final SlewRateLimiter slewRot = new SlewRateLimiter(ROTATION_SLEW);
+    private final SlewRateLimiter slewX = new SlewRateLimiter(Constants.DriveConstants.kMagnitudeSlewRate);
+    private final SlewRateLimiter slewY = new SlewRateLimiter(Constants.DriveConstants.kMagnitudeSlewRate);
+    private final SlewRateLimiter slewRot = new SlewRateLimiter(Constants.DriveConstants.kMagnitudeSlewRate);
 
     public DriveCommand(DriveBase driveBase,
                         DoubleSupplier throttleSupplier,
@@ -57,7 +58,7 @@ public class DriveCommand extends Command
         LCD.printLine(3, "lx=%.3f  ly=%.3f  gyro=%.3f  yaw=%.3f",
             controller.getLeftX(),
             controller.getLeftY(),
-            driveBase.getGyroRotation2d().getDegrees(),
+            //driveBase.getGyroRotation2d().getDegrees(),
             driveBase.getGyroYaw()
         );
 
@@ -70,8 +71,8 @@ public class DriveCommand extends Command
         
         if (robot.isAutonomous()) return;
 
-        double throttle = deadband(throttleSupplier.getAsDouble(), THROTTLE_DEADBAND);
-        double strafe = deadband(strafeSupplier.getAsDouble(), THROTTLE_DEADBAND);
+        double throttle = deadband(throttleSupplier.getAsDouble(), DRIVE_DEADBAND);
+        double strafe = deadband(strafeSupplier.getAsDouble(), DRIVE_DEADBAND);
         double rotation = deadband(rotationSupplier.getAsDouble(), ROTATION_DEADBAND);
 
         // Have to invert for sim...not sure why.
@@ -104,7 +105,7 @@ public class DriveCommand extends Command
         strafe = slewY.calculate(strafe);
         rotation = slewRot.calculate(rotation);
 
-        driveBase.drive(throttle, strafe, rotation);
+        //driveBase.drive(throttle, strafe, rotation);
     }
 
     @Override
@@ -112,7 +113,7 @@ public class DriveCommand extends Command
     {
         Util.consoleLog("interrupted=%b", interrupted);
 
-        driveBase.drive(0.0, 0.0, 0.0);
+        //driveBase.drive(0.0, 0.0, 0.0);
     }
  
     private static double deadband(double value, double deadband) 

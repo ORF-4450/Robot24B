@@ -80,7 +80,7 @@ public class DriveOut extends Command
 		// Reset odometry tracking with initial x,y position and heading (set above) specific to this 
 		// auto routine. Robot must be placed in same starting location each time for pose tracking
 		// to work.
-		driveBase.setOdometry(startingPose);
+		driveBase.resetOdometry(startingPose);
 
         double distance = 3.75;	// meters.
 		
@@ -121,7 +121,7 @@ public class DriveOut extends Command
 	{
 		Util.consoleLog("interrupted=%b", interrupted);
 		
-		driveBase.drive(0, 0, 0);
+		driveBase.drive(0, 0, 0, false);
 		
 		Util.consoleLog("final heading=%.2f  Radians=%.2f", RobotContainer.navx.getHeading(), RobotContainer.navx.getHeadingR());
 		Util.consoleLog("end ---------------------------------------------------------------");

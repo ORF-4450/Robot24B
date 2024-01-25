@@ -27,7 +27,6 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 public class Robot extends TimedRobot 
 {
   private RobotContainer  robotContainer;
-  private boolean         isAligned;
 
   /**
    * This function is called when the robot is first started up and should be used
@@ -227,12 +226,6 @@ public class Robot extends TimedRobot
     robotContainer.getMatchInformation();
 
     robotContainer.resetFaults();
-
-    // Align wheels to start position.
-
-    //RobotContainer.driveBase.setModulesToStartPosition();
-
-    isAligned = true;
     
     // RobotContainer function determines which auto command is selected to run.
 
@@ -278,12 +271,6 @@ public class Robot extends TimedRobot
     SmartDashboard.putBoolean("Teleop Mode", true);
 
     robotContainer.resetFaults();
-
-    // Align wheels to start position if not already done.
-
-    if (!isAligned) RobotContainer.driveBase.setModulesToStartPosition();
-
-    isAligned = true;
 
     // Driving handled by DriveCommand which is default command for the DriveBase.
     // Other commands scheduled by joystick buttons.

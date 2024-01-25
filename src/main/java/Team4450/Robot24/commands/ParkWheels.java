@@ -29,7 +29,7 @@ public class ParkWheels extends Command
 
         timeStamp = Util.timeStamp();
 
-        driveBase.drive(0, 0, .03);
+        //driveBase.drive(0, 0, .03);
     }
 
     @Override
@@ -44,7 +44,7 @@ public class ParkWheels extends Command
     @Override
     public void end(boolean interrupted) 
     {
-        driveBase.stop();
+        //driveBase.stop();
 
         Util.consoleLog("interrupted=%b", interrupted);
     }

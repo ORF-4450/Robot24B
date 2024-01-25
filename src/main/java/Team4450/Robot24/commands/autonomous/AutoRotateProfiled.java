@@ -29,8 +29,8 @@ public class AutoRotateProfiled extends ProfiledPIDCommand
 
     // We work in degrees but the profile works in radians, so we convert. 70 d/s is an eyeball
     // estimate of rotational vel and acceleration is a guess.
-    private static double kMaxRotationVelrs = Math.toRadians(MAX_ROTATIONAL_VEL);       
-    private static double kMaxRotationAccelrss = Math.toRadians(MAX_ROTATIONAL_ACCEL);   
+    private static double kMaxRotationVelrs = Math.toRadians(AutoConstants.kMaxAngularSpeedRadiansPerSecond);       
+    private static double kMaxRotationAccelrss = Math.toRadians(AutoConstants.kMaxAngularSpeedRadiansPerSecondSquared);   
 
     /**
      * Turns to robot to the specified angle using a motion profile.
@@ -105,7 +105,7 @@ public class AutoRotateProfiled extends ProfiledPIDCommand
         // Have to invert for sim...not sure why.
         if (RobotBase.isSimulation()) rotation *= -1;
 
-        driveBase.drive(throttle, strafe, rotation);
+        driveBase.drive(throttle, strafe, rotation, false);
     }
 
     @Override

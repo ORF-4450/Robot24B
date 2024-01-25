@@ -125,7 +125,7 @@ public class AutoDrive extends Command
 		else
 			Util.consoleLog("tgt=%.2f  act=%.2f", targetDistance, Math.abs(actualDistance));
 		
-		driveBase.drive(speed, 0, 0);
+		driveBase.drive(speed, 0, 0, false);
 
 		iterations++;
 	}

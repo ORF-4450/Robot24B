@@ -1,11 +1,9 @@
 package Team4450.Robot24.subsystems;
 
-import static Team4450.Robot24.Constants.*;
-
 import org.photonvision.PhotonCamera;
 import org.photonvision.common.hardware.VisionLEDMode;
 import org.photonvision.targeting.PhotonPipelineResult;
-import org.photonvision.targeting.PhotonTrackedTarget;
+// import org.photonvision.targeting.PhotonTrackedTarget;
 
 import Team4450.Lib.Util;
 import edu.wpi.first.util.sendable.SendableBuilder;
@@ -13,10 +11,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class PhotonVision extends SubsystemBase
 {
-    private PhotonCamera            camera = new PhotonCamera("LL-4450");
-    
+    private PhotonCamera            camera = new PhotonCamera("4450-LL");
     private PhotonPipelineResult    latestResult;
-    
     private VisionLEDMode           ledMode = VisionLEDMode.kOff;
 
 	public PhotonVision() 
@@ -35,6 +31,18 @@ public class PhotonVision extends SubsystemBase
         latestResult = camera.getLatestResult();
 
         return latestResult;
+    }
+
+    /**
+     * Returns the Fiducial ID of the current best target
+     * @return the ID or -1 if no targets
+     */
+    public int getFiducialID()
+    {
+        if (hasTargets()) 
+            return latestResult.getBestTarget().getFiducialId();
+        else
+            return -1;
     }
 
     /**
@@ -125,7 +133,8 @@ public class PhotonVision extends SubsystemBase
 
     /**
      * Save post-processed image from camera stream.
-     */    public void outputSnapshot()
+     */
+    public void outputSnapshot()
     {
         Util.consoleLog();
 

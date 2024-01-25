@@ -55,14 +55,16 @@ public class ShuffleBoard extends SubsystemBase
 	{    
         if (tracing) FunctionTracer.INSTANCE.enterFunction("ShuffleBoard.updateDS");
       
-        Pose2d pose = RobotContainer.driveBase.getRobotPose();
+        Pose2d pose = RobotContainer.driveBase.getPose();
       
         LCD.printLine(LCD_4, "pose x=%.1fm  y=%.1fm  deg=%.1f  yaw=%.1f", pose.getX(), 
                       pose.getY(), pose.getRotation().getDegrees(), RobotContainer.driveBase.getYaw());
 
-        LCD.printLine(LCD_6, "uLX=%.2f  uLY=%.2f - uRX=%.2f  uRY=%.2f", RobotContainer.utilityPad.getLeftX(),
-                      RobotContainer.utilityPad.getLeftY(), RobotContainer.utilityPad.getRightX(),
-                      RobotContainer.utilityPad.getRightY());
+        LCD.printLine(LCD_6, "uLX=%.2f  uLY=%.2f - uRX=%.2f  uRY=%.2f", 
+                      RobotContainer.utilityController.getLeftX(),
+                      RobotContainer.utilityController.getLeftY(), 
+                      RobotContainer.utilityController.getRightX(),
+                      RobotContainer.utilityController.getRightY());
                           
         if (tracing) FunctionTracer.INSTANCE.exitFunction("ShuffleBoard.updateDS");
     }
@@ -89,6 +91,7 @@ public class ShuffleBoard extends SubsystemBase
         SmartDashboard.putNumber("AirPressure", 0);
         SmartDashboard.putBoolean("TargetLocked", false);
         SmartDashboard.putBoolean("Autonomous Active", false);
+        SmartDashboard.putBoolean("Shooter", false);
     }
 
     /**

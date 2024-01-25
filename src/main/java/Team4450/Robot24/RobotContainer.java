@@ -6,23 +6,27 @@ import static Team4450.Robot24.Constants.*;
 import java.io.IOException;
 import java.nio.file.Path;
 
-import com.pathplanner.lib.PathConstraints;
-import com.pathplanner.lib.PathPlanner;
-import com.pathplanner.lib.PathPlannerTrajectory;
+import com.pathplanner.lib.auto.AutoBuilder;
+
+// import com.pathplanner.lib.PathConstraints;
+// import com.pathplanner.lib.PathPlanner;
+// import com.pathplanner.lib.PathPlannerTrajectory;
 
 import Team4450.Lib.CameraFeed;
 import Team4450.Lib.XboxController;
 import Team4450.Robot24.commands.DriveCommand;
+import Team4450.Robot24.commands.FaceAprilTag;
 import Team4450.Robot24.commands.ParkWheels;
+import Team4450.Robot24.commands.PointToYaw;
 import Team4450.Robot24.commands.SetToStartPositionCommand;
 import Team4450.Robot24.commands.Utility.NotifierCommand;
 import Team4450.Robot24.commands.autonomous.DriveOut;
 import Team4450.Robot24.commands.autonomous.TestAuto1;
 import Team4450.Robot24.commands.autonomous.TestAuto3;
-import Team4450.Robot24.commands.autonomous.TestAuto4;
 import Team4450.Robot24.subsystems.DriveBase;
 import Team4450.Robot24.subsystems.LimeLight;
 import Team4450.Robot24.subsystems.PhotonVision;
+import Team4450.Robot24.subsystems.Shooter;
 import Team4450.Robot24.subsystems.ShuffleBoard;
 import Team4450.Lib.MonitorPDP;
 import Team4450.Lib.NavX;
@@ -34,12 +38,15 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.util.sendable.SendableRegistry;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryUtil;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 /**
@@ -55,8 +62,9 @@ public class RobotContainer
 	public static ShuffleBoard	shuffleBoard;
 	public static DriveBase 	driveBase;
 	public static PhotonVision	photonVision;
-	public static LimeLight		limeLight;
-
+	//public static LimeLight		limeLight;
+	private final Shooter       shooter;
+	
 	// Subsystem Default Commands.
 
     // Persistent Commands.
@@ -79,8 +87,8 @@ public class RobotContainer
 	// Note that button responsiveness may be slowed as the schedulers command list gets longer 
 	// or commands get longer as buttons are processed once per scheduler run.
 	
-	private XboxController			driverPad =  new XboxController(DRIVER_PAD);
-	public static XboxController	utilityPad = new XboxController(UTILITY_PAD);
+	private XboxController			driverController =  new XboxController(DRIVER_PAD);
+	public static XboxController	utilityController = new XboxController(UTILITY_PAD);
 
 	//private AnalogInput			pressureSensor = new AnalogInput(PRESSURE_SENSOR);
 	  
@@ -98,8 +106,8 @@ public class RobotContainer
     private CameraFeed			cameraFeed;
     
 	// Trajectories.
-    public static Trajectory    		testTrajectory;
-	public static PathPlannerTrajectory	ppTestTrajectory;
+    //public static Trajectory    		testTrajectory;
+	//public static PathPlannerTrajectory	ppTestTrajectory;
 
     // List of autonomous programs. Any change here must be reflected in getAutonomousCommand()
     // and setAutoChoices() which appear later in this class.
@@ -108,13 +116,15 @@ public class RobotContainer
 		NoProgram,
 		DriveOut,
 		TestAuto1,
-		TestAuto3,
-		TestAuto4
+		TestAuto3
 	}
 
 	// Classes to access drop down lists on Driver Station.
-	private static SendableChooser<AutoProgram>	autoChooser;
-	private static SendableChooser<Integer>		startingPoseChooser;
+	//private static SendableChooser<AutoProgram>	autoChooser;
+
+	private static SendableChooser<Command>	autoChooser;
+	
+	//private static SendableChooser<Integer>		startingPoseChooser;
 
 	/**
 	 * The container for the robot. Contains subsystems, Opertor Interface devices, and commands.
@@ -173,30 +183,23 @@ public class RobotContainer
 		// Invert driving joy sticks Y axis so + values mean forward.
 		// Invert driving joy sticks X axis so + values mean right.
 	  
-		driverPad.invertY(true);
-		driverPad.invertX(true);		
+		//driverPad.invertY(true);
+		//driverPad.invertX(true);		
 
 		// Create subsystems prior to button mapping.
 
 		shuffleBoard = new ShuffleBoard();
 		driveBase = new DriveBase();
 		photonVision = new PhotonVision();
-		limeLight = new LimeLight();
+		shooter = new Shooter();
+		//limeLight = new LimeLight();
 
 		// Create any persistent commands.
 
 		// Set any subsystem Default commands.
 
 		// Set the default drive command. This command will be scheduled automatically to run
-		// every teleop period and so use the gamepad joy sticks to drive the robot. We pass the GetY()
-		// functions on the Joysticks as a DoubleSuppier. The point of this is removing the direct 
-		// connection between the Drive and XboxController classes. We are in effect passing functions 
-		// into the Drive command so it can read the values later when the Drive command is executing 
-		// under the Scheduler. Drive command code does not have to know anything about the JoySticks 
-		// (or any other source) but can still read them. We can pass the DoubleSupplier two ways. First
-		// is with () -> lambda expression which wraps the getLeftY() function in a DoubleSupplier instance.
-		// Second is using the convenience method getRightYDS() which returns getRightY() as a DoubleSupplier. 
-		// We show both ways here as an example.
+		// every teleop period and so use the gamepad joy sticks to drive the robot. 
 
 		// The joystick controls for driving:
 		// Left stick Y axis -> forward and backwards movement (throttle)
@@ -214,12 +217,14 @@ public class RobotContainer
 		// the down the field axis, no matter which way the robot is pointing. Robot oriented
 		// driving movemments are in relation to the direction the robot is currently pointing.
 
-		driveBase.setDefaultCommand(new DriveCommand(
-				driveBase,
-				() -> driverPad.getLeftY(),	// Throttle
-				() -> driverPad.getLeftX(),	// Strafe
-				driverPad.getRightXDS(),	// Rotation
-				driverPad));
+		driveBase.setDefaultCommand(
+			new RunCommand(
+				() -> driveBase.drive(
+					-MathUtil.applyDeadband(driverController.getLeftY(), Constants.DRIVE_DEADBAND),
+					-MathUtil.applyDeadband(driverController.getLeftX(), Constants.DRIVE_DEADBAND),
+					-MathUtil.applyDeadband(driverController.getRightX(), Constants.DRIVE_DEADBAND),
+					false),
+				driveBase));
 
 		// Start the compressor, PDP and camera feed monitoring Tasks.
 
@@ -250,9 +255,13 @@ public class RobotContainer
         
         // Configure autonomous routines and send to dashboard.
 
-		setAutoChoices();
+	    autoChooser = AutoBuilder.buildAutoChooser();
 
-		setStartingPoses();
+    	SmartDashboard.putData("Auto Program", autoChooser);
+
+		//setAutoChoices();
+
+		//setStartingPoses();
 
 		// Configure the button bindings.
 		
@@ -292,43 +301,63 @@ public class RobotContainer
 		// the target subsystem from an InstantCommand. It can be tricky deciding what functions
 		// should be an aspect of the subsystem and what functions should be in Commands...
 
+		// Holding Left bumper brakes and sets X pattern to stop movement.
+		new Trigger(() -> driverController.getLeftBumper())
+			.whileTrue(new RunCommand(() -> driveBase.setX(), driveBase));
+
+		// holding top right bumper enables the alternate rotation mode in
+		// which the driver points stick to desired heading.
+		// new Trigger(() -> driverController.getRightBumper())
+		//     .whileTrue(new StartEndCommand(robotDrive::enableAlternateRotation,
+		//                                    robotDrive::disableAlternateRotation));
+		new Trigger(() -> driverController.getRightBumper())
+			.whileTrue(new PointToYaw(
+				()->PointToYaw.yawFromAxes(
+					-MathUtil.applyDeadband(driverController.getRightX(), Constants.DRIVE_DEADBAND),
+					-MathUtil.applyDeadband(driverController.getRightY(), Constants.DRIVE_DEADBAND)
+				), driveBase, false
+			));
+
+		// the "A" button (or cross on PS4 controller) toggles tracking mode.
+		new Trigger(() -> driverController.getAButton())
+			.toggleOnTrue(new FaceAprilTag(photonVision, driveBase));
+
+		// POV buttons do same as alternate driving mode but without any lateral
+		// movement and increments of 45deg.
+		new Trigger(()-> driverController.getPOV() != -1)
+			.onTrue(new PointToYaw(()->PointToYaw.yawFromPOV(driverController.getPOV()), driveBase, true));
+
+		// reset field orientation
+		new Trigger(() -> driverController.getStartButton())
+			.onTrue(new InstantCommand(driveBase::zeroGyro));
+
+		// toggle field-oriented
+		new Trigger(() -> driverController.getBackButton())
+			.onTrue(new InstantCommand(driveBase::toggleFieldRelative));
+
+		// toggle slow-mode
+		new Trigger(() -> driverController.getLeftTrigger())
+			.whileTrue(new StartEndCommand(driveBase::enableSlowMode, driveBase::disableSlowMode));
+
 		// Advance DS tab display.
-		new Trigger(() -> driverPad.getPOVAngle(90))
-			.onTrue(new InstantCommand(shuffleBoard::switchTab));
+		//new Trigger(() -> driverPad.getPOVAngle(90))
+		//	.onTrue(new InstantCommand(shuffleBoard::switchTab));
         
-		// Set wheels to starting position.
-		new Trigger(() -> driverPad.getStartButton())
-			.onTrue(new SetToStartPositionCommand(driveBase));
-
-	    // Back button toggles field/robot oriented driving mode.
-    	new Trigger(() -> driverPad.getBackButton())
-        	.onTrue(new InstantCommand(driveBase::toggleFieldOriented));
-		
-		// NOTE: Left bumper engages "slow" mode and is defined in DriveCommand.
-
 		// Change camera feed. 
-		new Trigger(() -> driverPad.getRightBumper())
-    		.onTrue(new InstantCommand(cameraFeed::ChangeCamera));
+		//new Trigger(() -> driverPad.getRightBumper())
+    	//	.onTrue(new InstantCommand(cameraFeed::ChangeCamera));
 
 		// Reset yaw angle to zero.
-		new Trigger(() -> driverPad.getPOVAngle(180))
-    		.onTrue(new InstantCommand(driveBase::resetYaw));
+		//new Trigger(() -> driverPad.getPOVAngle(180))
+    	//	.onTrue(new InstantCommand(driveBase::resetYaw));
 
 		// Toggle drive motors between brake and coast.
-		new Trigger(() -> driverPad.getBButton())
-    		.onTrue(new InstantCommand(driveBase::toggleBrakeMode));
-
-		// Toggle Limelight LED.
-		new Trigger(() -> driverPad.getAButton())
-    		.onTrue(new InstantCommand(photonVision::toggleLedMode));
-
-		// Set drive wheels to parking orientation.
-		new Trigger(() -> driverPad.getXButton())
-    		.onTrue(new ParkWheels(driveBase));
+		//new Trigger(() -> driverPad.getBButton())
+    	//	.onTrue(new InstantCommand(driveBase::toggleBrakeMode));
 
 		// Reset drive wheel distance traveled.
-		new Trigger(() -> driverPad.getPOVAngle(270))
-    		.onTrue(new InstantCommand(driveBase::resetDistanceTraveled));
+		//new Trigger(() -> driverPad.getPOVAngle(270))
+    	//	.onTrue(new InstantCommand(driveBase::resetDistanceTraveled));
 		
 		// -------- Utility pad buttons ----------
 		// What follows is an example from 2022 robot:
@@ -353,6 +382,10 @@ public class RobotContainer
 			//.onTrue(new InstantCommand(pickup::toggleDeploy, pickup));
 		//	.onTrue(new NotifierCommand(pickup::toggleDeploy, 0.0, "DeployPickup", pickup));
 
+		// run shooter (manupulator controller)
+		new Trigger(() -> utilityController.getBButton())
+			.whileTrue(new StartEndCommand(shooter::start, shooter::stop, shooter));
+
 	}
 
 	/**
@@ -361,86 +394,90 @@ public class RobotContainer
 	 * DS drop down list of commands.
 	 * @return The command to run in autonomous
 	 */
-	public Command getAutonomousCommand() 
-	{
-		AutoProgram		program = AutoProgram.NoProgram;
-		Pose2d			startingPose = DEFAULT_STARTING_POSE;
-		Integer			startingPoseIndex = 0;
-		Command			autoCommand = null;
+	public Command getAutonomousCommand() {
+		return autoChooser.getSelected();
+  	}
+
+	// public Command getAutonomousCommand() 
+	// {
+	// 	AutoProgram		program = AutoProgram.NoProgram;
+	// 	Pose2d			startingPose = DEFAULT_STARTING_POSE;
+	// 	Integer			startingPoseIndex = 0;
+	// 	Command			autoCommand = null;
 		
-		Util.consoleLog();
+	// 	Util.consoleLog();
 
-		try
-		{
-			program = autoChooser.getSelected();
+	// 	try
+	// 	{
+	// 		program = autoChooser.getSelected();
 
-			startingPoseIndex = startingPoseChooser.getSelected();
+	// 		startingPoseIndex = startingPoseChooser.getSelected();
 
-			startingPose = STARTING_POSES[startingPoseIndex];
-		}
-		catch (Exception e)	{ Util.logException(e); }
+	// 		startingPose = STARTING_POSES[startingPoseIndex];
+	// 	}
+	// 	catch (Exception e)	{ Util.logException(e); }
 		
-		switch (program)
-		{
-			case NoProgram:
-				autoCommand = null;
-				break;
+	// 	switch (program)
+	// 	{
+	// 		case NoProgram:
+	// 			autoCommand = null;
+	// 			break;
  				
-			case DriveOut:
-				autoCommand = new DriveOut(driveBase, startingPose, startingPoseIndex);
-				break;
+	// 		case DriveOut:
+	// 			autoCommand = new DriveOut(driveBase, startingPose, startingPoseIndex);
+	// 			break;
 				
-			case TestAuto1:
-			 	autoCommand = new TestAuto1(driveBase, startingPose);
-			 	break;
+	// 		case TestAuto1:
+	// 		 	autoCommand = new TestAuto1(driveBase, startingPose);
+	// 		 	break;
  				
-			case TestAuto3:
-			 	autoCommand = new TestAuto3(driveBase, startingPose);
-			 	break;
+	// 		case TestAuto3:
+	// 		 	autoCommand = new TestAuto3(driveBase, startingPose);
+	// 		 	break;
  				
-			case TestAuto4:
-			 	autoCommand = new TestAuto4(driveBase, startingPose);
-			 	break;
-		}
+	// 		case TestAuto4:
+	// 		 	autoCommand = new TestAuto4(driveBase, startingPose);
+	// 		 	break;
+	// 	}
         
-		return autoCommand;
-	}
+	// 	return autoCommand;
+	// }
   
     // Configure SendableChooser (drop down list on dashboard) with auto program choices and
 	// send them to SmartDashboard/ShuffleBoard.
 	
-	private static void setAutoChoices()
-	{
-		Util.consoleLog();
+	// private static void setAutoChoices()
+	// {
+	// 	Util.consoleLog();
 		
-		autoChooser = new SendableChooser<AutoProgram>();
+	// 	autoChooser = new SendableChooser<AutoProgram>();
 		
-		SendableRegistry.add(autoChooser, "Auto Program");
-		autoChooser.setDefaultOption("No Program", AutoProgram.NoProgram);
-		autoChooser.addOption("Drive Out", AutoProgram.DriveOut);		
-		autoChooser.addOption("Test Auto 1", AutoProgram.TestAuto1);		
-		autoChooser.addOption("Test Auto 3", AutoProgram.TestAuto3);		
-		autoChooser.addOption("Test Auto 4", AutoProgram.TestAuto4);		
+	// 	SendableRegistry.add(autoChooser, "Auto Program");
+	// 	autoChooser.setDefaultOption("No Program", AutoProgram.NoProgram);
+	// 	autoChooser.addOption("Drive Out", AutoProgram.DriveOut);		
+	// 	autoChooser.addOption("Test Auto 1", AutoProgram.TestAuto1);		
+	// 	autoChooser.addOption("Test Auto 3", AutoProgram.TestAuto3);		
+	// 	autoChooser.addOption("Test Auto 4", AutoProgram.TestAuto4);		
 				
-		SmartDashboard.putData(autoChooser);
-	}
+	// 	SmartDashboard.putData(autoChooser);
+	// }
   
     // Configure SendableChooser (drop down list on dashboard) with starting pose choices and
 	// send them to SmartDashboard/ShuffleBoard.
 	
-	private void setStartingPoses()
-	{
-		Util.consoleLog();
+	// private void setStartingPoses()
+	// {
+	// 	Util.consoleLog();
 
-		startingPoseChooser = new SendableChooser<Integer>();
+	// 	startingPoseChooser = new SendableChooser<Integer>();
 		
-		SendableRegistry.add(startingPoseChooser, "Start Position");
-		startingPoseChooser.setDefaultOption("None", 0);
+	// 	SendableRegistry.add(startingPoseChooser, "Start Position");
+	// 	startingPoseChooser.setDefaultOption("None", 0);
 
-		for (Integer i = 1; i < STARTING_POSES.length; i++) startingPoseChooser.addOption(i.toString(), i);		
+	// 	//for (Integer i = 1; i < STARTING_POSES.length; i++) startingPoseChooser.addOption(i.toString(), i);		
 		
-		SmartDashboard.putData(startingPoseChooser);
-	}
+	// 	SmartDashboard.putData(startingPoseChooser);
+	// }
 
 	/**
 	 *  Get and log information about the current match from the FMS or DS.
@@ -506,7 +543,7 @@ public class RobotContainer
          
 	private void loadTestTrajectory()
 	{
-		testTrajectory = loadTrajectoryFile("Slalom-1.wpilib.json");
+		//testTrajectory = loadTrajectoryFile("Slalom-1.wpilib.json");
 	}
 
 	/**
@@ -514,33 +551,33 @@ public class RobotContainer
      * @param fileName Name of file. Will automatically look in deploy directory and add the .path ext.
      * @return The path's trajectory.
      */
-    public static PathPlannerTrajectory loadPPTrajectoryFile(String fileName)
-    {
-        PathPlannerTrajectory  	trajectory;
-        Path        			trajectoryFilePath;
+    // public static PathPlannerTrajectory loadPPTrajectoryFile(String fileName)
+    // {
+    //     PathPlannerTrajectory  	trajectory;
+    //     Path        			trajectoryFilePath;
 
-		// We fab up the full path for tracing but the loadPath() function does it's own
-		// thing constructing a path from just the filename.
-		trajectoryFilePath = Filesystem.getDeployDirectory().toPath().resolve("pathplanner/" + fileName + ".path");
+	// 	// We fab up the full path for tracing but the loadPath() function does it's own
+	// 	// thing constructing a path from just the filename.
+	// 	trajectoryFilePath = Filesystem.getDeployDirectory().toPath().resolve("pathplanner/" + fileName + ".path");
 
-		Util.consoleLog("loading PP trajectory: %s", trajectoryFilePath);
+	// 	Util.consoleLog("loading PP trajectory: %s", trajectoryFilePath);
 		
-		trajectory = PathPlanner.loadPath(fileName,
-										  new PathConstraints(MAX_WHEEL_SPEED, MAX_WHEEL_ACCEL));
+	// 	trajectory = PathPlanner.loadPath(fileName,
+	// 									  new PathConstraints(MAX_WHEEL_SPEED, MAX_WHEEL_ACCEL));
 
-		if (trajectory == null) 
-		{
-			Util.consoleLog("Unable to open pp trajectory: " + fileName);
-			throw new RuntimeException("Unable to open PP trajectory: " + fileName);
-		}
+	// 	if (trajectory == null) 
+	// 	{
+	// 		Util.consoleLog("Unable to open pp trajectory: " + fileName);
+	// 		throw new RuntimeException("Unable to open PP trajectory: " + fileName);
+	// 	}
 
-        Util.consoleLog("PP trajectory loaded: %s", fileName);
+    //     Util.consoleLog("PP trajectory loaded: %s", fileName);
 
-        return trajectory;
-    }
+    //     return trajectory;
+    // }
 
-	private void loadPPTestTrajectory()
-	{
-		ppTestTrajectory = loadPPTrajectoryFile("Test-Path");
-	}
+	// private void loadPPTestTrajectory()
+	// {
+	// 	ppTestTrajectory = loadPPTrajectoryFile("Test-Path");
+	// }
 }

@@ -39,13 +39,14 @@ public class AutoDriveProfiled extends ProfiledPIDCommand
     {
         super(
             new ProfiledPIDController(kP, kI, kD, 
-                                      new TrapezoidProfile.Constraints(MAX_WHEEL_SPEED, MAX_WHEEL_ACCEL)),
+                                      new TrapezoidProfile.Constraints(AutoConstants.kMaxSpeedMetersPerSecond, 
+                                      AutoConstants.kMaxAccelerationMetersPerSecondSquared)),
             // Closed loop on distance via reference so pid controller can call it on each execute() call.
             driveBase::getDistanceTraveled,
             // Set target distance.
             distance,
             // Pipe output to drive robot.
-            (output, setpoint) -> driveBase.drive(output, 0, 0)); //,
+            (output, setpoint) -> driveBase.drive(output, 0, 0, false)); //,
             // Require the drive base. Note: the db is required by the calling
             // autonmous command so we don't need it here and doing it here will
             // interrupt the calling auto command.

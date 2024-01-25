@@ -49,8 +49,8 @@ public class AutoDriveTrajectory extends SwerveControllerCommand
     AutoDriveTrajectory(DriveBase driveBase, Trajectory trajectory, StopMotors stop, Brakes brakes)
     {
         super(trajectory,
-            driveBase::getRobotPose, 
-            DriveBase.getKinematics(),
+            driveBase::getPose, 
+            DriveConstants.kDriveKinematics,
             new PIDController(kPX, 0, 0),
             new PIDController(kPY, 0, 0),
             thetaController,
@@ -86,7 +86,7 @@ public class AutoDriveTrajectory extends SwerveControllerCommand
 
         Util.consoleLog("initial traj poseX=%.2f  poseY=%.2f  poseHdg=%.2f", pose.getX(), pose.getY(), pose.getRotation().getDegrees());
         
-        driveBase.setOdometry(pose);
+        //driveBase.setOdometry(pose);
     }
 
     @Override
@@ -97,7 +97,7 @@ public class AutoDriveTrajectory extends SwerveControllerCommand
         // Causes the controller to advance one step, driving the robot one step along the path.
         super.execute();
         
-        Pose2d pose = driveBase.getRobotPose();
+        Pose2d pose = driveBase.getPose();
 
         Util.consoleLog("robot poseX=%.2f  poseY=%.2f  poseAng=%.2f", pose.getX(), pose.getY(), pose.getRotation().getDegrees());
 
@@ -120,7 +120,7 @@ public class AutoDriveTrajectory extends SwerveControllerCommand
 
         if (stop == StopMotors.stop) driveBase.stop();
                 
-        Pose2d pose = driveBase.getRobotPose();
+        Pose2d pose = driveBase.getPose();
 
         Util.consoleLog("poseX=%.2f  poseY=%.2f  poseAng=%.2f", pose.getX(), pose.getY(), pose.getRotation().getDegrees());
 
@@ -135,8 +135,9 @@ public class AutoDriveTrajectory extends SwerveControllerCommand
      */
     public static TrajectoryConfig getTrajectoryConfig()
     {
-        return new TrajectoryConfig(MAX_WHEEL_SPEED, MAX_WHEEL_ACCEL)
+        return new TrajectoryConfig(AutoConstants.kMaxSpeedMetersPerSecond, 
+                                    AutoConstants.kMaxAccelerationMetersPerSecondSquared)
                     // Add kinematics to ensure max speed is actually obeyed
-                    .setKinematics(DriveBase.getKinematics());
+                    .setKinematics(DriveConstants.kDriveKinematics);
     }
 }

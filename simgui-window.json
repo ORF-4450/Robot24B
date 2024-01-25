@@ -22,6 +22,11 @@
     }
   },
   "Window": {
+    "###/SmartDashboard/Auto Chooser": {
+      "Collapsed": "0",
+      "Pos": "137,105",
+      "Size": "361,66"
+    },
     "###/SmartDashboard/Auto Program": {
       "Collapsed": "0",
       "Pos": "135,27",
@@ -34,8 +39,8 @@
     },
     "###/SmartDashboard/Field2d": {
       "Collapsed": "0",
-      "Pos": "603,26",
-      "Size": "1011,550"
+      "Pos": "477,-1",
+      "Size": "1163,757"
     },
     "###/SmartDashboard/Gyro2": {
       "Collapsed": "0",
@@ -64,7 +69,7 @@
     },
     "###NetworkTables Info": {
       "Collapsed": "0",
-      "Pos": "240,294",
+      "Pos": "239,294",
       "Size": "750,145"
     },
     "###Other Devices": {

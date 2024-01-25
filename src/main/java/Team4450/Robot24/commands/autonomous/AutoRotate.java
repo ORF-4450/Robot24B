@@ -94,7 +94,7 @@ public class AutoRotate extends PIDCommand
         // Have to invert for sim...not sure why.
         if (RobotBase.isSimulation()) rotation *= -1;
 
-        driveBase.drive(throttle, strafe, rotation);
+        driveBase.drive(throttle, strafe, rotation, false);
     }
 
     @Override

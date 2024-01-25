@@ -27,7 +27,7 @@ public class SetToStartPositionCommand extends Command
     
         startTime = Util.timeStamp();
 
-        driveBase.setModulesToStartPosition();
+        //driveBase.setModulesToStartPosition();
 
         // Set navx yaw zero to align with facing down the field.
         RobotContainer.navx.resetYaw();
