@@ -3,26 +3,21 @@ Port and Button Assignments.
 CTRE CAN Ports
 Port	Device			Description
 -----------------------------------------------------------------------------------
-3       CanCoder        RR CanCoder.
-6       CanCoder        LR CanCoder.
-9       CanCoder        RF CanCoder.
-12      CanCoder        LF CanCoder.
-15      TalonFX         Claw motor.
 
 
 SparkMax CAN Ports
 Port	Device			Description
 -----------------------------------------------------------------------------------
-1       SparkMax        RR drive motor.
-2       SparkMax        RR steer motor.
-4       SparkMax        LR drive motor.
-5       SparkMax        LR steer motor.
-7       SparkMax        RF drive motor.
-8       SparkMax        RF steer motor.
-10      SparkMax        LF drive motor.
-11      SparkMax        LF steer motor.
-13      SparkMax        Arm motor.
-14      SparkMax        Winch motor.
+1       SparkMax        FL drive motor.
+2       SparkMax        FL steer motor.
+3       SparkMax        FR drive motor.
+4       SparkMax        FR steer motor.
+5       SparkMax        RL drive motor.
+6       SparkMax        RL steer motor.
+7       SparkMax        RR drive motor.
+8       SparkMax        RR steer motor.
+9       SparkMax        Shooter motor 1.
+10      SparkMax        Shooter motor 2.
 
 PWM Ports
 Port	Device			Description
@@ -32,7 +27,8 @@ Port	Device			Description
 PDP Ports
 Port	Device			Description
 -----------------------------------------------------------------------------------
-20      REV PDB         REV power distribution board.
+0       REV PDH         REV power distribution Hub.
+0       CTRE PDB        CTRE distribution board.
 
 
 PCM 0 Ports
@@ -48,10 +44,6 @@ Port	Device blk-pos	Description
 Digital I/O Ports
 Port	Device			Description
 -----------------------------------------------------------------------------------
-0       Limit Switch    Winch lower reset.
-1       Limit Switch    Winch upper reset.
-2       Limit Switch    ARM reset.
-3       Limit Switch    Claw reset.
 
 
 Analog I/O Ports
@@ -75,48 +67,36 @@ X Axis                  Rotate.
 Driver GamePad - Buttons
 Button Name				Function
 -----------------------------------------------------------------------------------
-LEFT_TRIGGER            Toggle Auto Align to tape target.
-RIGHT_TRIGGER           Hold winch position.
+LEFT_TRIGGER            Slow mode (Hold down).
+RIGHT_TRIGGER           
 BACK                    Toggle field/robot orientation driving.
-START                   Align wheels to start position.
-LEFT_BUMPER             Slow Mode.
-RIGHT_BUMPER       		Switch Cameras.
-POV_90                  Switch DS tab.
-POV_180                 Reset simulated yaw.
-POV_270                 Reset simulated distance traveled.
+START                   Reset Navx to reorient field direction.
+LEFT_BUMPER             Park Mode (hold down).
+RIGHT_BUMPER       		Alternate Drive Mode (hold down).
+POV_?                   Auto rotate to the POV direction.
+?                       Reset simulated yaw.
+?                       Reset simulated distance traveled.
+?                       Switch Shuffleboard tab.
+?                       Switch Camera.
 B                       Toggle drive wheel brake mode.
-X                       Drivebase park mode.
-A                       Toggle Limelight LED.
+X                       
+A                       Toggle April Tag Tracking mode.
 
 
 Utility GamePad - Left Joystick
 Button Name				Function
 -----------------------------------------------------------------------------------
-Y Axis                  ARM In/Out, pull back (+) is in.
 
 
 Utility GamePad - Right Joystick
 Button Name				Function
 -----------------------------------------------------------------------------------
-Y Axis                  Winch Up/down, pull back (+) is up.
-//X Axis                  Claw Open/Close, right (+) is close, left is open.
 
 
 Utility GamePad - Buttons
 Button Name				Function
 -----------------------------------------------------------------------------------
-POV_0                   Raise arm to starting position.
-POV_180                 Fully retract arm.
-BACK                    Reset Arm encoder to zero.
-RIGHT_TRIGGER           Drop game piece.
-LEFT_TRIGGER            Intake cone.
-LEFT_BUMPER             Intake cube.
-RIGHT_BUMPER            Drop arm to lowest position.
-X                       Move arm to feed station position.
-Y                       Hold winch position.
-//Y                       Move arm to high scoring position.
-B                       Move arm to mid scoring position.
-A                       Override Arm encoder zero (DriveArm).
+B                       Toggles Shooter Motors.
 
 
 Dashboard Indicators/Controls
@@ -135,17 +115,10 @@ Overload				boolean			True when brownout has occurred.
 Auto Program            Chooser         List of autonomous programs.
 Autonomous active       boolean         True if any auto program is active.
 Field Oriented          boolean         True when swerve drive is in field orientation mode.
-RaiseArm                boolean         True when RaiseArm command is active.
-LowerArm                boolean         True when LowerArm command is active.
-RetractArm              boolean         True when RetractArm command is active.
-ExtendArm               boolean         True when ExtendArm command is active.
-DropArm                 boolean         True when DropArm command is active.
-OpenClaw                boolean         True when OpenClaw command is active.
-CloseClaw               boolean         True when CloseClaw command is active.
-FeedStation             boolean         True when FeedStation command is active.
-ScoreHigh               boolean         True when ScoreHigh command is active.
-ScoreMid                boolean         True when ScoreMid command is active.
+Shooter                 boolean         True when shooter motors  running.
+Alternate Drive         boolean         True when alternate driving mode is enabled.
+Tracking                boolean         True when tracking mode is enabled.
 
 
-Drive Base gearbox ratios: SDS Level 1 for approx 9.28 f/s or 3 m/s.
+Drive Base gearbox ratios: MaxSwerve 14 tooth pinion for approx 15.7 f/s or 4.8 m/s.
 

@@ -352,8 +352,8 @@ public class RobotContainer
     	//	.onTrue(new InstantCommand(driveBase::resetYaw));
 
 		// Toggle drive motors between brake and coast.
-		//new Trigger(() -> driverPad.getBButton())
-    	//	.onTrue(new InstantCommand(driveBase::toggleBrakeMode));
+		new Trigger(() -> driverController.getBButton())
+    		.onTrue(new InstantCommand(driveBase::toggleBrakeMode));
 
 		// Reset drive wheel distance traveled.
 		//new Trigger(() -> driverPad.getPOVAngle(270))
@@ -384,7 +384,7 @@ public class RobotContainer
 
 		// run shooter (manupulator controller)
 		new Trigger(() -> utilityController.getBButton())
-			.whileTrue(new StartEndCommand(shooter::start, shooter::stop, shooter));
+			.toggleOnTrue(new StartEndCommand(shooter::start, shooter::stop, shooter));
 
 	}
 

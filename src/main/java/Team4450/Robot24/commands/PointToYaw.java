@@ -32,6 +32,7 @@ public class PointToYaw extends Command {
         this.wait = wait;
         this.requirements = Set.of();
 
+        // RICH Why set.of ?
         if (wait) this.requirements = Set.of(robotDrive);
     }
 
@@ -81,7 +82,7 @@ public class PointToYaw extends Command {
 
     @Override
     public void end(boolean interrupted) {
-        Util.consoleLog("ended interrupted: %b", interrupted);
+        Util.consoleLog("%b", interrupted);
 
         robotDrive.disableTracking();
         robotDrive.setTrackingRotation(0);

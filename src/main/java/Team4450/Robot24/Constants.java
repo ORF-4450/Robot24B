@@ -37,6 +37,9 @@ public final class Constants
 	    
 	// Non-drive base motor controller port assignments
 
+    public static final int     SHOOTER_MOTOR_1 = 9;
+    public static final int     SHOOTER_MOTOR_2 = 10;
+
     public static final int     REV_PDB = 20;
 	
 	// GamePad port assignments.
@@ -184,11 +187,6 @@ public final class Constants
         // Constraint for the motion profiled robot angle controller
         public static final TrapezoidProfile.Constraints kThetaControllerConstraints = new TrapezoidProfile.Constraints(
             kMaxAngularSpeedRadiansPerSecond, kMaxAngularSpeedRadiansPerSecondSquared);
-    }
-
-    public static final class GeneralConstants {
-        public static final int kShooterMotor1CanId = 9;
-        public static final int kShooterMotor2CanId = 10;
     }
 
     public static final class NeoMotorConstants {

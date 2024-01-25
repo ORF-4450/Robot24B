@@ -495,7 +495,7 @@ public class DriveBase extends SubsystemBase {
   private void updateDS()
   {
       SmartDashboard.putBoolean("Field Relative", fieldRelative);
-      SmartDashboard.putBoolean("Brakes on", currentBrakeMode);
+      SmartDashboard.putBoolean("Brakes", currentBrakeMode);
       SmartDashboard.putBoolean("Alternate Drive", alternateRotation);
       SmartDashboard.putBoolean("Tracking", istracking);
       SmartDashboard.putNumber("Speed Factor", speedLimiter);
@@ -657,8 +657,6 @@ public class DriveBase extends SubsystemBase {
   }
 
   public void setTrackingRotation(double o) {
-    Util.consoleLog("%.2f", o);
-
     trackingRotation = o;
   }
 
