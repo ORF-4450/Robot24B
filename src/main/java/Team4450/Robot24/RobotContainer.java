@@ -15,10 +15,12 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import Team4450.Lib.CameraFeed;
 import Team4450.Lib.XboxController;
 import Team4450.Robot24.commands.DriveCommand;
+import Team4450.Robot24.commands.DriveToNote;
 import Team4450.Robot24.commands.FaceAprilTag;
 import Team4450.Robot24.commands.ParkWheels;
 import Team4450.Robot24.commands.PointToYaw;
 import Team4450.Robot24.commands.SetToStartPositionCommand;
+import Team4450.Robot24.commands.UpdateVisionPose;
 import Team4450.Robot24.commands.Utility.NotifierCommand;
 import Team4450.Robot24.commands.autonomous.DriveOut;
 import Team4450.Robot24.commands.autonomous.TestAuto1;
@@ -198,6 +200,11 @@ public class RobotContainer
 
 		// Set any subsystem Default commands.
 
+		// This sets up the photonVision subsystem to constantly update the robotDrive odometry
+	    // with AprilTags (if it sees them).
+
+    	photonVision.setDefaultCommand(new UpdateVisionPose(photonVision, driveBase));
+
 		// Set the default drive command. This command will be scheduled automatically to run
 		// every teleop period and so use the gamepad joy sticks to drive the robot. 
 
@@ -307,9 +314,6 @@ public class RobotContainer
 
 		// holding top right bumper enables the alternate rotation mode in
 		// which the driver points stick to desired heading.
-		// new Trigger(() -> driverController.getRightBumper())
-		//     .whileTrue(new StartEndCommand(robotDrive::enableAlternateRotation,
-		//                                    robotDrive::disableAlternateRotation));
 		new Trigger(() -> driverController.getRightBumper())
 			.whileTrue(new PointToYaw(
 				()->PointToYaw.yawFromAxes(
@@ -339,6 +343,10 @@ public class RobotContainer
 		new Trigger(() -> driverController.getLeftTrigger())
 			.whileTrue(new StartEndCommand(driveBase::enableSlowMode, driveBase::disableSlowMode));
 
+		// toggle Note tracking.
+	    new Trigger(() -> driverController.getBButton())
+    	    .toggleOnTrue(new DriveToNote(driveBase, photonVision));
+
 		// Advance DS tab display.
 		//new Trigger(() -> driverPad.getPOVAngle(90))
 		//	.onTrue(new InstantCommand(shuffleBoard::switchTab));
@@ -352,8 +360,8 @@ public class RobotContainer
     	//	.onTrue(new InstantCommand(driveBase::resetYaw));
 
 		// Toggle drive motors between brake and coast.
-		new Trigger(() -> driverController.getBButton())
-    		.onTrue(new InstantCommand(driveBase::toggleBrakeMode));
+		//new Trigger(() -> driverController.getBButton())
+    	//	.onTrue(new InstantCommand(driveBase::toggleBrakeMode));
 
 		// Reset drive wheel distance traveled.
 		//new Trigger(() -> driverPad.getPOVAngle(270))
