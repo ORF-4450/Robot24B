@@ -38,8 +38,6 @@ public class Robot extends TimedRobot
   {
     try {
       robot = this;   // Stored in Constants.
-      
-      //DataLogManager.start();
 
       LCD.clearAll();
       LCD.printLine(LCD_1, "Mode: RobotInit");
@@ -321,6 +319,8 @@ public class Robot extends TimedRobot
     // mode, LiveWindow will be enabled to display test data to the
     // outlineviewer to shuffleboard. Our "test" mode is the regular
     // telop with LW enabled.
+
+    LiveWindow.enableAllTelemetry();
 
     teleopInit();
 
