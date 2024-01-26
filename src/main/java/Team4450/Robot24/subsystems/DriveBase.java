@@ -153,7 +153,7 @@ public class DriveBase extends SubsystemBase {
 
     if (ModuleConstants.kDrivingMotorIdleMode == IdleMode.kBrake) currentBrakeMode = true;
 
-    //resetOdometry(DriveConstants.DEFAULT_STARTING_POSE); Set above in pose estimator.
+    resetOdometry(DriveConstants.DEFAULT_STARTING_POSE); 
 
     configureAutoBuilder();
   }
@@ -700,7 +700,7 @@ public class DriveBase extends SubsystemBase {
   public void updateOdometryVision(Pose2d pose, double timestamp) {
     odometry.addVisionMeasurement(pose, timestamp);
   }
-  
+
   private void configureAutoBuilder() {
     Util.consoleLog();
 

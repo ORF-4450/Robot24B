@@ -9,7 +9,6 @@ import Team4450.Lib.Util;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Subsystem;
 import Team4450.Robot24.subsystems.DriveBase;
 import Team4450.Robot24.subsystems.PhotonVision;
 
@@ -17,7 +16,6 @@ import Team4450.Robot24.subsystems.PhotonVision;
 public class UpdateVisionPose extends Command {
     PhotonVision    cameraSubsystem;
     DriveBase       robotDrive;
-    Set<Subsystem>  requirements;
 
     /**
      * updates the odometry pose estimator to include sighted AprilTag positions from
@@ -29,8 +27,8 @@ public class UpdateVisionPose extends Command {
         this.cameraSubsystem = cameraSubsystem;
         this.robotDrive = robotDrive;
 
-        // require camera subsystem for use in defaultcommand
-        requirements = Set.of(cameraSubsystem);
+        // require camera subsystem.
+        addRequirements(cameraSubsystem);
     }
 
     @Override
