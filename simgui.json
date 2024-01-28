@@ -19,12 +19,16 @@
       "/LiveWindow/Winch": "Subsystem",
       "/LiveWindow/Winch/UpperLimitSwitch": "Digital Input",
       "/SmartDashboard/AprilTag PID": "PIDController",
+      "/SmartDashboard/AprilTag Rotate PID": "PIDController",
       "/SmartDashboard/Auto Chooser": "String Chooser",
       "/SmartDashboard/Auto Program": "String Chooser",
+      "/SmartDashboard/Field": "Field2d",
       "/SmartDashboard/Field2d": "Field2d",
       "/SmartDashboard/Gyro2": "Gyro",
       "/SmartDashboard/Start Pose": "String Chooser",
-      "/SmartDashboard/Start Position": "String Chooser"
+      "/SmartDashboard/Start Position": "String Chooser",
+      "/SmartDashboard/trackNoteRotationPID": "PIDController",
+      "/SmartDashboard/trackNoteTranslationPID": "PIDController"
     },
     "windows": {
       "/SmartDashboard/Auto Chooser": {
@@ -121,8 +125,5 @@
         "open": true
       }
     }
-  },
-  "NetworkTables Info": {
-    "visible": true
   }
 }

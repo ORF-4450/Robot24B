@@ -24,12 +24,12 @@ public class FaceAprilTag extends Command {
     public FaceAprilTag(PhotonVision cameraSubsystem, DriveBase robotDrive) {
         Util.consoleLog();
 
-        // tolerance is in degrees
+        // tolerance is in degrees.
         pidController.setTolerance(0.3);
 
         this.robotDrive = robotDrive;
         this.photonVision = cameraSubsystem;
-        
+
         SmartDashboard.putData("AprilTag Rotate PID", pidController);
     }
 
@@ -37,6 +37,8 @@ public class FaceAprilTag extends Command {
     public void initialize() {
         Util.consoleLog();
 
+        pidController.reset();
+        
         robotDrive.enableTracking();
     }
     
@@ -78,7 +80,9 @@ public class FaceAprilTag extends Command {
     @Override
     public void end(boolean interrupted) {
         Util.consoleLog("interrupted=%b", interrupted);
-        this.robotDrive.disableTracking();
+        
+        robotDrive.disableTracking();
+
         SmartDashboard.putBoolean("Has AprilTag", false);
         SmartDashboard.putNumber("AprilTag ID", 0);
     }

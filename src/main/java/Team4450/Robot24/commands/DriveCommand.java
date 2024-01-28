@@ -11,7 +11,6 @@ import java.util.function.DoubleSupplier;
 
 import Team4450.Lib.LCD;
 import Team4450.Lib.Util;
-import Team4450.Robot24.Constants;
 import Team4450.Robot24.subsystems.DriveBase;
 
 public class DriveCommand extends Command 
@@ -23,9 +22,9 @@ public class DriveCommand extends Command
     private final DoubleSupplier rotationSupplier;
     private final XboxController controller;
     
-    private final SlewRateLimiter slewX = new SlewRateLimiter(Constants.DriveConstants.kMagnitudeSlewRate);
-    private final SlewRateLimiter slewY = new SlewRateLimiter(Constants.DriveConstants.kMagnitudeSlewRate);
-    private final SlewRateLimiter slewRot = new SlewRateLimiter(Constants.DriveConstants.kMagnitudeSlewRate);
+    // private final SlewRateLimiter slewX = new SlewRateLimiter(Constants.DriveConstants.kMagnitudeSlewRate);
+    // private final SlewRateLimiter slewY = new SlewRateLimiter(Constants.DriveConstants.kMagnitudeSlewRate);
+    // private final SlewRateLimiter slewRot = new SlewRateLimiter(Constants.DriveConstants.kMagnitudeSlewRate);
 
     public DriveCommand(DriveBase driveBase,
                         DoubleSupplier throttleSupplier,
@@ -45,6 +44,12 @@ public class DriveCommand extends Command
     }
 
     @Override
+    public void initialize()
+    {
+        Util.consoleLog();
+    }
+
+    @Override
     public void execute() 
     {
         LCD.printLine(2, "rx=%.3f  ry=%.3f  throttle=%.3f  strafe=%.3f  rot=%.3f",
@@ -55,7 +60,7 @@ public class DriveCommand extends Command
             rotationSupplier.getAsDouble()
         );
 
-        LCD.printLine(3, "lx=%.3f  ly=%.3f  gyro=%.3f  yaw=%.3f",
+        LCD.printLine(3, "lx=%.3f  ly=%.3f  yaw=%.3f",
             controller.getLeftX(),
             controller.getLeftY(),
             //driveBase.getGyroRotation2d().getDegrees(),
@@ -77,35 +82,8 @@ public class DriveCommand extends Command
 
         // Have to invert for sim...not sure why.
         if (RobotBase.isSimulation()) rotation *= -1;
-
-        // "Slow" mode. Caps speeds while bumper held down.
-        // Cap rotation to 60% rest of the time.
-
-        if (controller.getLeftBumper())
-        {
-            throttle = Util.clampValue(throttle, .20);
-            strafe = Util.clampValue(strafe, .20);
-            rotation = Util.clampValue(rotation, .20);
-        }
-        else
-            rotation = Util.clampValue(rotation, .60);
         
-        // Squaring inputs and slew rate limiters are ways to slow down
-        // or smooth response to the joystick inputs. Will test both methods.
-
-        // Squaring seemed to really slow throttle response but seemed to slow
-        // rotation effectively.
-
-        //throttle = squareTheInput(throttle);
-        //strafe = squareTheInput(strafe);
-
-        rotation = squareTheInput(rotation);
-
-        throttle = slewX.calculate(throttle);
-        strafe = slewY.calculate(strafe);
-        rotation = slewRot.calculate(rotation);
-
-        //driveBase.drive(throttle, strafe, rotation);
+        driveBase.drive(throttle, strafe, rotation, false);
     }
 
     @Override

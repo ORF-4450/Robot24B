@@ -17,16 +17,9 @@ import Team4450.Lib.XboxController;
 import Team4450.Robot24.commands.DriveCommand;
 import Team4450.Robot24.commands.DriveToNote;
 import Team4450.Robot24.commands.FaceAprilTag;
-import Team4450.Robot24.commands.ParkWheels;
 import Team4450.Robot24.commands.PointToYaw;
-import Team4450.Robot24.commands.SetToStartPositionCommand;
 import Team4450.Robot24.commands.UpdateVisionPose;
-import Team4450.Robot24.commands.Utility.NotifierCommand;
-import Team4450.Robot24.commands.autonomous.DriveOut;
-import Team4450.Robot24.commands.autonomous.TestAuto1;
-import Team4450.Robot24.commands.autonomous.TestAuto3;
 import Team4450.Robot24.subsystems.DriveBase;
-import Team4450.Robot24.subsystems.LimeLight;
 import Team4450.Robot24.subsystems.PhotonVision;
 import Team4450.Robot24.subsystems.Shooter;
 import Team4450.Robot24.subsystems.ShuffleBoard;
@@ -38,14 +31,11 @@ import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.util.sendable.SendableRegistry;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryUtil;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
@@ -185,8 +175,8 @@ public class RobotContainer
 		// Invert driving joy sticks Y axis so + values mean forward.
 		// Invert driving joy sticks X axis so + values mean right.
 	  
-		//driverPad.invertY(true);
-		//driverPad.invertX(true);		
+		driverController.invertY(true);
+		driverController.invertX(true);		
 
 		// Create subsystems prior to button mapping.
 
@@ -224,14 +214,19 @@ public class RobotContainer
 		// the down the field axis, no matter which way the robot is pointing. Robot oriented
 		// driving movemments are in relation to the direction the robot is currently pointing.
 
-		driveBase.setDefaultCommand(
-			new RunCommand(
-				() -> driveBase.drive(
-					-MathUtil.applyDeadband(driverController.getLeftY(), Constants.DRIVE_DEADBAND),
-					-MathUtil.applyDeadband(driverController.getLeftX(), Constants.DRIVE_DEADBAND),
-					-MathUtil.applyDeadband(driverController.getRightX(), Constants.DRIVE_DEADBAND),
-					false),
-				driveBase));
+		driveBase.setDefaultCommand(new DriveCommand(driveBase,
+		 							driverController.getLeftYDS(),
+									driverController.getLeftXDS(), 
+									driverController.getRightXDS(),
+									driverController));
+
+			// new RunCommand(
+			// 	() -> driveBase.drive(
+			// 		-MathUtil.applyDeadband(driverController.getLeftY(), DRIVE_DEADBAND),
+			// 		-MathUtil.applyDeadband(driverController.getLeftX(), DRIVE_DEADBAND),
+			// 		-MathUtil.applyDeadband(driverController.getRightX(), DRIVE_DEADBAND),
+			// 		false),
+			// 	driveBase));
 
 		// Start the compressor, PDP and camera feed monitoring Tasks.
 
