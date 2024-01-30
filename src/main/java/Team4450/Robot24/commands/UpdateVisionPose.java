@@ -12,7 +12,10 @@ import edu.wpi.first.wpilibj2.command.Command;
 import Team4450.Robot24.subsystems.DriveBase;
 import Team4450.Robot24.subsystems.PhotonVision;
 
-
+/**
+ * TODO
+ * Need some doc on what this class does.
+ */
 public class UpdateVisionPose extends Command {
     PhotonVision    cameraSubsystem;
     DriveBase       robotDrive;
@@ -41,8 +44,9 @@ public class UpdateVisionPose extends Command {
         Optional<EstimatedRobotPose> estimatedPoseOptional = cameraSubsystem.getEstimatedPose();
 
         // update pose estimator pose with current epoch timestamp and the pose from the camera
-        // if the camera has a good pose output
-        // logic to decide if a pose is valid should be put in PhotonVision.java file, not here
+        // if the camera has a good pose output.
+        // Logic to decide if a pose is valid should be put in PhotonVision.java file, not here.
+
         if (estimatedPoseOptional.isPresent()) {
             EstimatedRobotPose estimatedPoseContainer = estimatedPoseOptional.get();
              // pose2d to pose3d (ignore the Z axis which is height off ground)

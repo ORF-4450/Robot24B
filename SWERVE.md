@@ -1,33 +1,26 @@
-### Configuring the Swerve code for your robot
+### Swerve code notes 2024.
 
-1. Set your team number.
-2. Read through and configure `frc.robot.Constants`. Parts of the code that need to be configured for your specific
-robot setup are marked with comments starting with `FIXME`.
-> Don't configure the `*_MODULE_STEER_OFFSET` constants yet. Those are configured after code is deployed.
-4. Read through and configure `frc.robot.subsystems.DrivetrainSubsystem`. Parts of the code that need to be configured
-for your specific robot setup are marked with comments starting with `FIXME`.
-5. At this point deploy the code. If it endlessly crashes at startup make sure your CAN IDs are properly set and make
-sure you are using the proper swerve module configurations for your hardware.
+Robot23 used the Swerve Drive Specialties swerve modules. It used a highly modified version
+of the sample SDS code. SDS code had a detailed configuration procedure to align the wheels
+correctly and obtain the CanCoder offsets needed by that code. That procedure was documented
+in this file.
 
-### Setting up module offsets
+For 2024, it was decided to move to the REV MaxSwerve modules. These modules and the SparkMax
+motor controllers used by the Neo and Neo550 motors have a built in configuration scheme which
+is documented in the MaxSwerve manual. As such, it not documented here.
 
-Now that we have code running on the robot, we can set up our module steering offsets. In order to do this we must have
-our encoder values displayed to the dashboard.
+In anticipation of MaxSwerve, the SDS based code, partially located in RobotLib and Robot23
+DriveBase class, was modified to support MaxSwerve. SDS code supports Neos as drive and steer
+motors via the SparkMax controller. However, the MaxSwerve uses the REV through bore encoders
+instead of SDS's CanCoders. This encoder difference was the main modification to the SDS code.
 
-> Before setting up module offsets ensure each offset is set to `-Math.toRadians(0.0)` and that code is deployed to the
-> robot. This must be done each time offsets are determined.
+In parallel to that effort, the team also took the MaxSwerve sample code and got it ready to
+test as a back up for the SDS modifications.
 
-1. Turn the robot on its side, so it is easy to move each module by hand.
-
-> By default, module sensor information is displayed in the `Drivetrain` tab on ShuffleBoard.
-
-2. Rotate each module so the bevel gear on the sides of each wheel are pointing to the robot's left.
-> When aligning the wheels they must be as straight as possible. It is recommended to use a long straight edge such as
-> a piece of 2x1 in order to make the wheels straight.
-
-3. Record the angles of each module using the reading displayed on the dashboard.
-
-4. Set the values of the `*_MODULE_STEER_OFFSET` constants in `Constants` to `-Math.toRadians(<the angle you recorded>)`
-5. Re-deploy and try to drive the robot forwards. All wheels should stay parallel to each other.
-6. Make sure all the wheels are spinning in the correct direction. If not, add 180 degrees to the offset of each wheel 
-that is spinning in the incorrect direction. (I.e. `-Math.toRadians(<angle> + 180.0))`)
+When the MaxSwerve drive base prototype was finished and testing began, the MaxSwerve sample
+code worked first time but the SDS code did not. Development of the MaxSwerve code proceeded
+at a rapid pace. A fix was applied to the SDS code, but due to the rapid advancement of the
+MaxSwerve code, not only for swerve driving, but support for April Tag vision and advanced
+navigation, the SDS fix was never tested. Things quickly reached a point where it made sense 
+to just adopt the MaxSwerve based code into Robot24 and leave the SDS code for a later date 
+or perhaps never. In all honesty, the SDS code is very complex where the MaxSwerve is simpler.

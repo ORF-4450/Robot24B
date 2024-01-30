@@ -67,7 +67,6 @@ public class PointToYaw extends Command {
         
         // sets the override in drivebase so it will use rotation rather than joystick
         robotDrive.setTrackingRotation(rotation);
-
     }
 
     @Override
@@ -87,8 +86,8 @@ public class PointToYaw extends Command {
     public void initialize() {
         Util.consoleLog();
 
-        // in radians:
-        pidController.setTolerance(.01);
+        pidController.reset();
+        pidController.setTolerance(.01);      // in radians.
         pidController.enableContinuousInput(-Math.PI, Math.PI); // rotation is continuous: full circle repeats
         robotDrive.enableTracking();
     }

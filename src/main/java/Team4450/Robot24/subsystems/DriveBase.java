@@ -142,6 +142,8 @@ public class DriveBase extends SubsystemBase {
    rearLeft.setTranslation2d(new Translation2d(-DriveConstants.kTrackWidth / 2.0, DriveConstants.kTrackWidth / 2.0));
    rearRight.setTranslation2d(new Translation2d(-DriveConstants.kTrackWidth / 2.0, -DriveConstants.kTrackWidth / 2.0));
 
+    // Set up simulated NavX.
+
     if (RobotBase.isSimulation())
     {
       var dev = SimDeviceDataJNI.getSimDeviceHandle("navX-Sensor[0]");
@@ -149,18 +151,27 @@ public class DriveBase extends SubsystemBase {
       simAngle = new SimDouble((SimDeviceDataJNI.getSimValueHandle(dev, "Yaw")));
     }
 
+    // Field2d drives the field display under simulation.
+
     SmartDashboard.putData("Field2d", field2d);
 
+    // Save initial brake mode to we can toggle it later.
+
     if (ModuleConstants.kDrivingMotorIdleMode == IdleMode.kBrake) currentBrakeMode = true;
+
+    // Set tracking of robot field position at starting point.
 
     resetOdometry(DriveConstants.DEFAULT_STARTING_POSE); 
 
     configureAutoBuilder();
   }
 
+  // Called on every Scheduler loop.
+
   @Override
   public void periodic() {
-    // Update the odometry
+    // Update the odometry (robot position on field).
+
     Pose2d currentPose = odometry.update(
         Rotation2d.fromDegrees(getGyroYaw()),   //gyro.getAngle()),
         new SwerveModulePosition[] {
@@ -174,6 +185,9 @@ public class DriveBase extends SubsystemBase {
     //SmartDashboard.putNumber("Gyro turn rate", getTurnRate());
 
     SmartDashboard.putString("Robot pose", currentPose.toString());
+
+    // Following code tracks robot movement distance and yaw so we can reset
+    // those values separately from the NavX.
 
     Transform2d poseOffset = currentPose.minus(lastPose);
 
@@ -194,13 +208,18 @@ public class DriveBase extends SubsystemBase {
 
     lastPose = currentPose;
 
+    // Set robot position on sim field display.
+
     field2d.setRobotPose(currentPose);
 
-    // Now update the pose of each wheel (module).
+    // Now update the pose of each swerve module.
+
     updateModulePose(frontLeft);
     updateModulePose(frontRight);
     updateModulePose(rearLeft);
     updateModulePose(rearRight);
+
+    // Updates sim display of swerve modules.
 
     setField2dModulePoses();
   }
@@ -278,7 +297,7 @@ public class DriveBase extends SubsystemBase {
     if (istracking && !Double.isNaN(trackingRotation)) rot = trackingRotation;
 
     // Have to invert for sim...not sure why.
-    if (RobotBase.isSimulation()) rot *= -1;
+    //if (RobotBase.isSimulation()) rot *= -1; Moved to DriveCommand.
 
     if (rateLimit)
     {
@@ -343,11 +362,19 @@ public class DriveBase extends SubsystemBase {
     driveChassisSpeeds(chassisSpeeds);
   }
 
-  // for pathplanner
+  /**
+   * Get the current ChassisSpeeds object used to drive robot. Primarily for
+   * PathPlanner.
+   * @return Current ChassisSpeeds object.
+   */
   public ChassisSpeeds getChassisSpeeds() {
     return this.chassisSpeeds;
   }
 
+  /**
+   * Drives robot by commanding swerve modules from a ChassisSpeeds object.
+   * @param speeds The ChassisSpeeds object.
+   */
   public void driveChassisSpeeds(ChassisSpeeds speeds) {
     SwerveModuleState swerveModuleStates[] = DriveConstants.kDriveKinematics.toSwerveModuleStates(speeds);
 
@@ -369,17 +396,17 @@ public class DriveBase extends SubsystemBase {
    * @param rot           Angular rate of the robot.
    */
   public void driveRobotRelative(double xSpeed, double ySpeed, double rot) {
-    // store the previous state of field-relative toggle to restore later
-    boolean previousState = this.fieldRelative;
-    this.fieldRelative = false;
+    // store the current state of field-relative toggle to restore later
+    boolean previousState = fieldRelative;
+    fieldRelative = false;
 
     updateDS();
 
-    // drive using the relative speeds/joystick values
+    // drive using the robot relative speeds/joystick values
     drive(xSpeed, ySpeed, rot, false);
 
-    // restore previous state
-    this.fieldRelative = previousState;
+    // restore previous state of field-relative.
+    fieldRelative = previousState;
 
     updateDS();
   }
@@ -395,7 +422,7 @@ public class DriveBase extends SubsystemBase {
   }
 
   /**
-   * Sets the swerve ModuleStates.
+   * Sets the swerve Module States. For trajectory following.
    *
    * @param desiredStates The desired SwerveModule states.
    */
@@ -625,7 +652,7 @@ public class DriveBase extends SubsystemBase {
   public void enableAlternateRotation() {
     Util.consoleLog();
 
-    this.alternateRotation = true;
+    alternateRotation = true;
     
     updateDS();
   }
@@ -697,10 +724,22 @@ public class DriveBase extends SubsystemBase {
     drive(0, 0, 0, false);
   }
 
+  /**
+   * Used by vision system to update the odometry tracking in this
+   * class with vision estimates of robot position. It is expected 
+   * the vision code will use this method to regularly update the
+   * odometry object to enhance position tracking accuracy.
+   * @param pose The vision esitmated current pose of the robot.
+   * @param timestamp The time at which the vision measurement was taken.
+   */
   public void updateOdometryVision(Pose2d pose, double timestamp) {
     odometry.addVisionMeasurement(pose, timestamp);
   }
 
+  /**
+   * Configures the PathPlanner auto generation of paths/autos by telling
+   * PathPlaner about our the drive train.
+   */
   private void configureAutoBuilder() {
     Util.consoleLog();
 

@@ -31,22 +31,23 @@ public class PhotonVision extends SubsystemBase
     private PhotonPipelineResult    latestResult;
     private VisionLEDMode           ledMode = VisionLEDMode.kOff;
 
-    private Field2d field = new Field2d();
+    private Field2d                 field = new Field2d();
 
     // adams code ==========
     private final AprilTagFields    fields = AprilTagFields.k2024Crescendo;
-    private AprilTagFieldLayout     FIELD_LAYOUT;
+    private AprilTagFieldLayout     fieldLayout;
     private PhotonPoseEstimator     poseEstimator;
 
     // end adams code=============
 
 	public PhotonVision() 
 	{
-        FIELD_LAYOUT = fields.loadAprilTagLayoutField();
+        fieldLayout = fields.loadAprilTagLayoutField();
 
         // setup the AprilTag pose etimator
+        
         poseEstimator = new PhotonPoseEstimator(
-            FIELD_LAYOUT,
+            fieldLayout,
             PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, // strategy to use for tag to pose calculation
             camera, // the PhotonCamera
             new Transform3d() // a series of transformations from Camera pos. to robot pos. (where camera is on robot)
@@ -55,6 +56,8 @@ public class PhotonVision extends SubsystemBase
         setLedMode(ledMode);
 
 		Util.consoleLog("PhotonVision created!");
+
+        // This sim field2d shows vision estimate of robot position.
 
         SmartDashboard.putData(field);
 	}
@@ -92,7 +95,7 @@ public class PhotonVision extends SubsystemBase
         if (hasTargets()) {
             List<PhotonTrackedTarget> targets = latestResult.getTargets();
 
-            for (int i=0;i<targets.size();i++) {
+            for (int i = 0; i < targets.size(); i++) {
                 PhotonTrackedTarget target = targets.get(i);
                 if (target.getFiducialId() == id) return target;
             }
@@ -255,7 +258,7 @@ public class PhotonVision extends SubsystemBase
      */
     public Optional<EstimatedRobotPose> getEstimatedPose() {
         Optional<EstimatedRobotPose> estimatedPoseOptional = poseEstimator.update();
-        
+
         if (estimatedPoseOptional.isPresent()) {
             EstimatedRobotPose estimatedPose = estimatedPoseOptional.get();
             Pose3d pose = estimatedPose.estimatedPose;
@@ -268,7 +271,7 @@ public class PhotonVision extends SubsystemBase
 
             // logic for checking if pose is valid would go here:
             // for example:
-            for (int i=0;i<estimatedPose.targetsUsed.size();i++) {
+            for (int i = 0; i < estimatedPose.targetsUsed.size(); i++) {
                 // if a target was used with ID > 16 then return no estimated pose
                 if (estimatedPose.targetsUsed.get(i).getFiducialId() > 16) {
                     return Optional.empty();
