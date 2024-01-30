@@ -40,6 +40,7 @@ import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+//import edu.wpi.first.wpilibj.ADIS16470_IMU;
 
 public class DriveBase extends SubsystemBase {
   // Create MAXSwerveModules
@@ -66,6 +67,10 @@ public class DriveBase extends SubsystemBase {
   // The gyro sensor
   //private final ADIS16470_IMU gyro = new ADIS16470_IMU();
 
+  // Note: If we switch gyros back to ADS IMU, we will have to create code to
+  // drive the 360 degree direction indicator (gyro2) on the  shuffleboard
+  // display as it is currently driven directly by the NavX class from RobotLib.
+  
   private final AHRS    navx = RobotContainer.navx.getAHRS();
 
   private SimDouble     simAngle; // navx sim.
@@ -449,8 +454,18 @@ public class DriveBase extends SubsystemBase {
    * @return the robot's heading in degrees, from 0 to 359.
    */
   public double getHeading() {
+    // TODO: If we change gyros, this will need a solution for 360.
     return RobotContainer.navx.getHeadingInt();
   }
+
+  /**
+   * Returns the heading of the robot.
+   *
+   * @return the robot's heading in degrees, from -180 to 180
+   */
+  // public double getHeading() {
+  //   return Rotation2d.fromDegrees(m_gyro.getAngle()).getDegrees();
+  // }
 
   /**
    * Returns the turn rate of the robot.
@@ -471,14 +486,18 @@ public class DriveBase extends SubsystemBase {
     double angle = Math.IEEEremainder((-navx.getAngle()), 360);
 
     return angle;
+
+    //gyro.getAngle()
   }
 
   /**
    * Get gyro yaw from the angle of the robot at last gyro reset.
    * @return Rotation2D containing Gyro yaw in radians. + is left of zero (ccw) - is right (cw).
    */
-  public Rotation2d getGyroYaw2dx()
+  public Rotation2d getGyroYaw2d()
   {
+    // TODO: This function is not currently used. If we change gyros, and we want to use this, it
+    // will have to be rewritten for new gyro.
     if (navx.isMagnetometerCalibrated())
     {
      // We will only get valid fused headings if the magnetometer is calibrated
@@ -616,6 +635,8 @@ public class DriveBase extends SubsystemBase {
     Util.consoleLog();
 
     navx.reset();
+    
+    //m_gyro.reset();
   }
 
   /**
