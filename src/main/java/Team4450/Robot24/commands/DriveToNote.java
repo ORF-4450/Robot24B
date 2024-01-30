@@ -41,6 +41,7 @@ public class DriveToNote extends Command {
 
     @Override
     public void execute() {
+        if (!photonVision.hasTargets()) return;
         // make sure target centered before we move
         if (!rotationController.atSetpoint()) {
             double rotation = rotationController.calculate(photonVision.getYaw());
@@ -49,7 +50,7 @@ public class DriveToNote extends Command {
         // otherwise drive to the target (only forwards backwards)
         else {
             double movement = translationController.calculate(photonVision.getArea());
-            robotDrive.driveRobotRelative(0, -movement, 0); // negatice because camera backwards
+            robotDrive.driveRobotRelative(-movement, 0, 0); // negative because camera backwards.
         }
     }
 
