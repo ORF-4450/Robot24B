@@ -14,13 +14,13 @@ public class Shooter extends SubsystemBase {
     private CANSparkMax motor1 = new CANSparkMax(SHOOTER_MOTOR_1, MotorType.kBrushless);
     private CANSparkMax motor2 = new CANSparkMax(SHOOTER_MOTOR_2, MotorType.kBrushless);
 
-    private double  motorSpeed = 1;
+    private double  motorSpeed = -1;
     private boolean isrunning = false;
 
     public Shooter() {
-        motor1.setInverted(true);
+        // motor1.setInverted(true);
 
-        motor2.follow(motor1, true);
+        motor2.follow(motor1);
 
         SmartDashboard.putNumber("Shooter speed", motorSpeed);
 
