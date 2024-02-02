@@ -7,6 +7,11 @@ import java.io.IOException;
 import java.nio.file.Path;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.commands.PathPlannerAuto;
+
+import Team4450.Robot24.commands.autonomous.AutoEnd;
+import Team4450.Robot24.commands.autonomous.AutoStart;
 
 // import com.pathplanner.lib.PathConstraints;
 // import com.pathplanner.lib.PathPlanner;
@@ -116,6 +121,8 @@ public class RobotContainer
 
 	private static SendableChooser<Command>	autoChooser;
 	
+	private static String 					autonomousCommandName = "none";
+
 	//private static SendableChooser<Integer>		startingPoseChooser;
 
 	/**
@@ -256,12 +263,8 @@ public class RobotContainer
 		}
         
         // Configure autonomous routines and send to dashboard.
-
-	    autoChooser = AutoBuilder.buildAutoChooser();
-
-    	SmartDashboard.putData("Auto Program", autoChooser);
-
-		//setAutoChoices();
+		
+		setAutoChoices();
 
 		//setStartingPoses();
 
@@ -395,11 +398,41 @@ public class RobotContainer
 	 * Use this to pass the autonomous command(s) to the main {@link Robot} class.
 	 * Determines which auto command from the selection made by the operator on the
 	 * DS drop down list of commands.
-	 * @return The command to run in autonomous
+	 * @return The Command to run in autonomous.
 	 */
 	public Command getAutonomousCommand() {
-		return autoChooser.getSelected();
+		PathPlannerAuto  	ppAutoCommand;
+		Command				autoCommand;
+
+		autoCommand = autoChooser.getSelected();
+
+		if (autoCommand == null) 
+		{
+			autonomousCommandName = "none";
+
+			return autoCommand;
+		}
+
+		autonomousCommandName = autoCommand.getName();
+
+		Util.consoleLog("auto name=%s", autonomousCommandName);
+
+		if (autoCommand instanceof PathPlannerAuto)
+		{
+			ppAutoCommand = (PathPlannerAuto) autoCommand;
+	
+			Util.consoleLog("pp starting pose=%s", PathPlannerAuto.getStaringPoseFromAutoFile(autoCommand.getName().toString()));
+		}
+
+		return autoCommand;
+
+		//return autoChooser.getSelected();
   	}
+
+	public static String getAutonomousCommandName()
+	{
+		return autonomousCommandName;
+	}
 
 	// public Command getAutonomousCommand() 
 	// {
@@ -449,10 +482,23 @@ public class RobotContainer
     // Configure SendableChooser (drop down list on dashboard) with auto program choices and
 	// send them to SmartDashboard/ShuffleBoard.
 	
-	// private static void setAutoChoices()
-	// {
-	// 	Util.consoleLog();
+	private void setAutoChoices()
+	{
+	 	Util.consoleLog();
 		
+		// Register commands called from PathPlanner Autos.
+		
+		NamedCommands.registerCommand("AutoStart", new AutoStart());
+		NamedCommands.registerCommand("AutoEnd", new AutoEnd());
+
+		// Create a chooser with the PathPlanner Autos located in the PP
+		// folders.
+
+	    autoChooser = AutoBuilder.buildAutoChooser();
+		
+    	SmartDashboard.putData("Auto Program", autoChooser);
+	}
+
 	// 	autoChooser = new SendableChooser<AutoProgram>();
 		
 	// 	SendableRegistry.add(autoChooser, "Auto Program");
@@ -522,32 +568,32 @@ public class RobotContainer
      * @param fileName Name of file. Will automatically look in deploy directory.
      * @return The path's trajectory.
      */
-    public static Trajectory loadTrajectoryFile(String fileName)
-    {
-        Trajectory  trajectory;
-        Path        trajectoryFilePath;
+    // public static Trajectory loadTrajectoryFile(String fileName)
+    // {
+    //     Trajectory  trajectory;
+    //     Path        trajectoryFilePath;
 
-        try 
-        {
-          trajectoryFilePath = Filesystem.getDeployDirectory().toPath().resolve("paths/" + fileName);
+    //     try 
+    //     {
+    //       trajectoryFilePath = Filesystem.getDeployDirectory().toPath().resolve("paths/" + fileName);
 
-          Util.consoleLog("loading trajectory: %s", trajectoryFilePath);
+    //       Util.consoleLog("loading trajectory: %s", trajectoryFilePath);
           
-          trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryFilePath);
-        } catch (IOException ex) {
-		  Util.consoleLog("Unable to open trajectory: " + ex.toString());
-          throw new RuntimeException("Unable to open trajectory: " + ex.toString());
-        }
+    //       trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryFilePath);
+    //     } catch (IOException ex) {
+	// 	  Util.consoleLog("Unable to open trajectory: " + ex.toString());
+    //       throw new RuntimeException("Unable to open trajectory: " + ex.toString());
+    //     }
 
-        Util.consoleLog("trajectory loaded: %s", fileName);
+    //     Util.consoleLog("trajectory loaded: %s", fileName);
 
-        return trajectory;
-    }
+    //     return trajectory;
+    // }
          
-	private void loadTestTrajectory()
-	{
-		//testTrajectory = loadTrajectoryFile("Slalom-1.wpilib.json");
-	}
+	// private void loadTestTrajectory()
+	// {
+	// 	//testTrajectory = loadTrajectoryFile("Slalom-1.wpilib.json");
+	// }
 
 	/**
      * Loads a PathPlanner path file into a path planner trajectory.

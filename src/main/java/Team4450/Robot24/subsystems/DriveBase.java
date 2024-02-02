@@ -70,7 +70,7 @@ public class DriveBase extends SubsystemBase {
   // Note: If we switch gyros back to ADS IMU, we will have to create code to
   // drive the 360 degree direction indicator (gyro2) on the  shuffleboard
   // display as it is currently driven directly by the NavX class from RobotLib.
-  
+
   private final AHRS    navx = RobotContainer.navx.getAHRS();
 
   private SimDouble     simAngle; // navx sim.
@@ -270,6 +270,8 @@ public class DriveBase extends SubsystemBase {
    * @param pose The pose to which to set the odometry.
    */
   public void resetOdometry(Pose2d pose) {
+    Util.consoleLog(pose.toString());
+    
     odometry.resetPosition(
         Rotation2d.fromDegrees(getGyroYaw()), //gyro.getAngle()),
         new SwerveModulePosition[] {
