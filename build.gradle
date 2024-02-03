@@ -150,17 +150,17 @@ tasks.withType(JavaCompile) {
 
 
 spotless {
-    java {
-        target fileTree('.') {
-            include '**/*.java'
-            exclude '**/build/**', '**/build-*/**'
-        }
-        toggleOffOn()
-        eclipse()
-        removeUnusedImports()
-        trimTrailingWhitespace()
-        endWithNewline()
-    }
+    // java {
+    //     target fileTree('.') {
+    //         include '**/*.java'
+    //         exclude '**/build/**', '**/build-*/**'
+    //     }
+    //     toggleOffOn()
+    //     eclipse()
+    //     removeUnusedImports()
+    //     trimTrailingWhitespace()
+    //     endWithNewline()
+    // }
     groovyGradle {
         target fileTree('.') {
             include '**/*.gradle'

@@ -8,4 +8,3 @@ https://medium.com/@anirudhramesh95/enforcing-formatting-standards-for-your-java
 
 # Running Spotless
 Spotless can be ran using ```.\gradlew spotlessApply ```
-
