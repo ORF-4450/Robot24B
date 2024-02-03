@@ -2,7 +2,7 @@
 ----------------------------------------------------------------------------
 FRC Team 4450 2023 Robot Control program.
 
-This is the 2023 competition robot control program reference implementation created by the Olympia Robotics Federation (FRC Team 4450), updated to 2024 beta. 
+This is the 2023 competition robot control program reference implementation created by the Olympia Robotics Federation (FRC Team 4450), updated to 2024 beta.
 
 Operates the robot "Prometheus" for FRC game "Charged Up".
 

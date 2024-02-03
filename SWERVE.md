@@ -29,5 +29,5 @@ our encoder values displayed to the dashboard.
 
 4. Set the values of the `*_MODULE_STEER_OFFSET` constants in `Constants` to `-Math.toRadians(<the angle you recorded>)`
 5. Re-deploy and try to drive the robot forwards. All wheels should stay parallel to each other.
-6. Make sure all the wheels are spinning in the correct direction. If not, add 180 degrees to the offset of each wheel 
+6. Make sure all the wheels are spinning in the correct direction. If not, add 180 degrees to the offset of each wheel
 that is spinning in the incorrect direction. (I.e. `-Math.toRadians(<angle> + 180.0))`)
