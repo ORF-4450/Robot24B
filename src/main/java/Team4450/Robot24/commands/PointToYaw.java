@@ -5,6 +5,7 @@ import java.util.function.DoubleSupplier;
 
 import Team4450.Lib.Util;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.util.sendable.SendableRegistry;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import Team4450.Robot24.subsystems.DriveBase;
@@ -31,6 +32,8 @@ public class PointToYaw extends Command {
         this.robotDrive = robotDrive;
         this.wait = wait;
         this.requirements = Set.of();
+
+        SendableRegistry.addLW(pidController, "PointToYaw PID");
 
         // if wait is set to true, then "require" the drive subsystem to ovverride other commands
         if (wait) this.requirements = Set.of(robotDrive);

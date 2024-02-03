@@ -3,6 +3,7 @@ package Team4450.Robot24.commands;
 import Team4450.Lib.Util;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.util.sendable.SendableRegistry;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import Team4450.Robot24.subsystems.DriveBase;
@@ -23,8 +24,10 @@ public class DriveToNote extends Command {
         this.robotDrive = robotDrive;
         this.photonVision = photonVision;
 
-        SmartDashboard.putData("trackNoteTranslationPID", translationController);
-        SmartDashboard.putData("trackNoteRotationPID", rotationController);
+        SendableRegistry.addLW(translationController, "TrackNote Translation PID");
+        SendableRegistry.addLW(rotationController, "TrackNote Rotation PID");
+        //SmartDashboard.putData("trackNoteTranslationPID", translationController);
+        //SmartDashboard.putData("trackNoteRotationPID", rotationController);
     }
 
     @Override

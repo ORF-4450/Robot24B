@@ -14,6 +14,7 @@ import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.util.sendable.SendableRegistry;
 import edu.wpi.first.wpilibj.RobotBase;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.REVPhysicsSim;
@@ -42,7 +43,7 @@ public class MAXSwerveModule implements Sendable {
   private double            chassisAngularOffset = 0;
   //private SwerveModuleState desiredState = new SwerveModuleState(0.0, new Rotation2d());
 
-  private double            currentSimVelocity, currentSimPosition, currentSimAngle;
+  private double            currentSimVelocity = 0, currentSimPosition = 0, currentSimAngle = 0;
   public String             moduleLocation;
   private Pose2d            pose;
   private Translation2d     translation2d;
@@ -58,7 +59,7 @@ public class MAXSwerveModule implements Sendable {
 
     Util.consoleLog("%s", moduleLocation);
                
-    SendableRegistry.addLW(this, "DriveSubsystem/Swerve Modules", moduleLocation);
+    SendableRegistry.addLW(this, "DriveBase/Swerve Modules", moduleLocation);
     
     drivingSparkMax = new CANSparkMax(drivingCANId, MotorType.kBrushless);
     turningSparkMax = new CANSparkMax(turningCANId, MotorType.kBrushless);
@@ -204,6 +205,8 @@ public class MAXSwerveModule implements Sendable {
     correctedDesiredState.speedMetersPerSecond = desiredState.speedMetersPerSecond;
     correctedDesiredState.angle = desiredState.angle.plus(Rotation2d.fromRadians(chassisAngularOffset));
 
+    //SmartDashboard.putNumber(moduleLocation + " desired speed", correctedDesiredState.speedMetersPerSecond);
+
     // Optimize the reference state to avoid spinning further than 90 degrees.
     SwerveModuleState optimizedDesiredState = SwerveModuleState.optimize(correctedDesiredState,
         new Rotation2d(turningEncoder.getPosition()));
@@ -217,8 +220,6 @@ public class MAXSwerveModule implements Sendable {
     currentSimVelocity = optimizedDesiredState.speedMetersPerSecond;
     
     double distancePer20Ms = currentSimVelocity / 50.0;
-
-    //SmartDashboard.putNumber(moduleLocation + " sim vel", currentSimVelocity);
 
     currentSimPosition += distancePer20Ms;
   }
@@ -259,9 +260,7 @@ public class MAXSwerveModule implements Sendable {
       if (RobotBase.isReal())
           rot = new Rotation2d(turningEncoder.getPosition());
       else
-          rot = new Rotation2d(currentSimAngle - chassisAngularOffset);
-
-      //SmartDashboard.putNumber(moduleLocation + " hdng", rot.getDegrees());
+          rot = new Rotation2d(currentSimAngle); // - chassisAngularOffset);
 
       return rot;
   }
@@ -284,13 +283,29 @@ public class MAXSwerveModule implements Sendable {
       drivingSparkMax.setIdleMode(IdleMode.kCoast);
   }
 
+  /**
+   * Return current drive velocity
+   * @return Velocity m/s.
+   */
+  public double getVelocity()
+  {
+    if (RobotBase.isReal())
+      return drivingEncoder.getVelocity();
+    else
+      return currentSimVelocity;
+  }
+
   @Override
 	public void initSendable( SendableBuilder builder )
 	{
     builder.setSmartDashboardType(getClass().getSimpleName());
 
-    builder.addDoubleProperty("Cur pos dist", () -> getPosition().distanceMeters, null);
-    builder.addDoubleProperty("Cur pos angle", () -> getPosition().angle.getDegrees(), null);
-    builder.addStringProperty("Pose", () -> getPose().toString(), null);
+    builder.addDoubleProperty("1 Cur pos dist", () -> getPosition().distanceMeters, null);
+    builder.addDoubleProperty("2 Cur pos angle", () -> getPosition().angle.getDegrees(), null);
+    builder.addStringProperty("3 Pose", () -> getPose().toString(), null);
+    builder.addDoubleProperty("4 Velocity SP", () -> currentSimVelocity, null);
+    builder.addDoubleProperty("5 Steer angle SP", () -> Math.toDegrees(currentSimAngle), null);
+    builder.addDoubleProperty("6 Actual velocity", () -> getVelocity(), null);
+    builder.addDoubleProperty("7 Actual steer sngle", () -> getAngle2d().getDegrees(), null);
 	}   
 }

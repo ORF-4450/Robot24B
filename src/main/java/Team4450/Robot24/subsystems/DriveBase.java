@@ -361,10 +361,14 @@ public class DriveBase extends SubsystemBase {
     double ySpeedDelivered = ySpeedCommanded * speedLimiter * DriveConstants.kMaxSpeedMetersPerSecond;
     double rotDelivered = currentRotation * speedLimiter * DriveConstants.kMaxAngularSpeed;
 
+    SmartDashboard.putNumber("Rotation Del", rotDelivered);
+
     chassisSpeeds =
         fieldRelative
             ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered, Rotation2d.fromDegrees(getGyroYaw()))
             : new ChassisSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered);
+
+    SmartDashboard.putNumber("Rotation CS", chassisSpeeds.omegaRadiansPerSecond);
 
     driveChassisSpeeds(chassisSpeeds);
   }
