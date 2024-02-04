@@ -55,6 +55,7 @@ public class UpdateVisionPose extends Command {
                 estimatedPoseContainer.estimatedPose.getY(),
                 new Rotation2d(estimatedPoseContainer.estimatedPose.getRotation().getAngle())
             );
+            Util.consoleLog("updated with vision");
 
             robotDrive.updateOdometryVision(pose2d, estimatedPoseContainer.timestampSeconds);
         }

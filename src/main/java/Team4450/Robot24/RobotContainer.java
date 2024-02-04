@@ -193,6 +193,10 @@ public class RobotContainer
 		shooter = new Shooter();
 		//limeLight = new LimeLight();
 
+		NamedCommands.registerCommand("StartIntake", new InstantCommand(shooter::start));
+		NamedCommands.registerCommand("StopIntake", new InstantCommand(shooter::stop));
+		
+
 		// Create any persistent commands.
 
 		// Set any subsystem Default commands.

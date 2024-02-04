@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.38,
-      "y": 5.54
+      "x": 1.56,
+      "y": 5.578687240707814
     },
-    "rotation": -90.9691858298383
+    "rotation": 90.0
   },
   "command": {
     "type": "sequential",
@@ -14,25 +14,19 @@
         {
           "type": "named",
           "data": {
-            "name": "AutoStart"
+            "name": "StartIntake"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "speaker to note"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "note to note to trap"
+            "pathName": "New Path"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "AutoEnd"
+            "name": "StopIntake"
           }
         }
       ]

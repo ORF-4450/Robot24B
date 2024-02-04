@@ -185,6 +185,8 @@ public class DriveBase extends SubsystemBase {
             rearLeft.getPosition(),
             rearRight.getPosition()
         });
+      
+    SmartDashboard.putNumber("pose angle", currentPose.getRotation().getDegrees());
 
     SmartDashboard.putNumber("Gyro angle", getGyroYaw());
     //SmartDashboard.putNumber("Gyro turn rate", getTurnRate());
@@ -270,10 +272,12 @@ public class DriveBase extends SubsystemBase {
    * @param pose The pose to which to set the odometry.
    */
   public void resetOdometry(Pose2d pose) {
+    Util.consoleLog("initial gyro angle: %f", getGyroYaw());
     Util.consoleLog(pose.toString());
+
     
     odometry.resetPosition(
-        Rotation2d.fromDegrees(getGyroYaw()), //gyro.getAngle()),
+        pose.getRotation(), //gyro.getAngle()),
         new SwerveModulePosition[] {
             frontLeft.getPosition(),
             frontRight.getPosition(),
@@ -780,7 +784,7 @@ public class DriveBase extends SubsystemBase {
               new PIDConstants(AutoConstants.kHolonomicPathFollowerP, 0.0, 0.0), // Rotation PID constants
               DriveConstants.kMaxSpeedMetersPerSecond, // Max module speed, in m/s
               DriveConstants.kDriveBaseRadius, // Drive base radius in meters. Distance from robot center to furthest module.
-              new ReplanningConfig() // Default path replanning config. See the API for the options here
+              new ReplanningConfig(false, false) // Default path replanning config. See the API for the options here
       ),
       () -> {
           // Boolean supplier that controls when the path will be mirrored for the red alliance
