@@ -26,7 +26,7 @@ import Team4450.Robot24.commands.PointToYaw;
 import Team4450.Robot24.commands.UpdateVisionPose;
 import Team4450.Robot24.subsystems.DriveBase;
 import Team4450.Robot24.subsystems.PhotonVision;
-import Team4450.Robot24.subsystems.Shooter;
+import Team4450.Robot24.subsystems.Intake;
 import Team4450.Robot24.subsystems.ShuffleBoard;
 import Team4450.Lib.MonitorPDP;
 import Team4450.Lib.NavX;
@@ -60,7 +60,7 @@ public class RobotContainer
 	public static DriveBase 	driveBase;
 	public static PhotonVision	photonVision;
 	//public static LimeLight		limeLight;
-	private final Shooter       shooter;
+	private final Intake       	intake;
 	
 	// Subsystem Default Commands.
 
@@ -190,7 +190,7 @@ public class RobotContainer
 		shuffleBoard = new ShuffleBoard();
 		driveBase = new DriveBase();
 		photonVision = new PhotonVision();
-		shooter = new Shooter();
+		intake = new Intake();
 		//limeLight = new LimeLight();
 
 		// Create any persistent commands.
@@ -390,7 +390,7 @@ public class RobotContainer
 
 		// run shooter (manupulator controller)
 		new Trigger(() -> utilityController.getBButton())
-			.toggleOnTrue(new StartEndCommand(shooter::start, shooter::stop, shooter));
+			.toggleOnTrue(new StartEndCommand(intake::start, intake::stop, intake));
 
 	}
 

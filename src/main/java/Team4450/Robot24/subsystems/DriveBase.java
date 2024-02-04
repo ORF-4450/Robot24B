@@ -273,7 +273,7 @@ public class DriveBase extends SubsystemBase {
     Util.consoleLog(pose.toString());
     
     odometry.resetPosition(
-        Rotation2d.fromDegrees(getGyroYaw()), //gyro.getAngle()),
+        pose.getRotation(), //Rotation2d.fromDegrees(getGyroYaw()), //gyro.getAngle()),
         new SwerveModulePosition[] {
             frontLeft.getPosition(),
             frontRight.getPosition(),
