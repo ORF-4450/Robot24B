@@ -195,9 +195,6 @@ public class RobotContainer
 		intake = new Intake();
 		shooter = new Shooter();
 		//limeLight = new LimeLight();
-
-		NamedCommands.registerCommand("StartIntake", new InstantCommand(intake::start));
-		NamedCommands.registerCommand("StopIntake", new InstantCommand(intake::stop));
 		
 
 		// Create any persistent commands.
@@ -399,6 +396,7 @@ public class RobotContainer
 		new Trigger(() -> utilityController.getBButton())
 			.toggleOnTrue(new StartEndCommand(intake::start, intake::stop, intake));
 		
+		// shooter commands
 		new Trigger(() -> utilityController.getRightBumper())
 			.toggleOnTrue(new StartEndCommand(shooter::startShooting, shooter::stopShooting));
 		new Trigger(() -> utilityController.getRightTrigger())
@@ -502,6 +500,8 @@ public class RobotContainer
 		
 		NamedCommands.registerCommand("AutoStart", new AutoStart());
 		NamedCommands.registerCommand("AutoEnd", new AutoEnd());
+		NamedCommands.registerCommand("StartIntake", new InstantCommand(intake::start));
+		NamedCommands.registerCommand("StopIntake", new InstantCommand(intake::stop));
 
 		// Create a chooser with the PathPlanner Autos located in the PP
 		// folders.

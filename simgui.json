@@ -31,11 +31,6 @@
       "/SmartDashboard/trackNoteTranslationPID": "PIDController"
     },
     "windows": {
-      "/SmartDashboard/Auto Chooser": {
-        "window": {
-          "visible": true
-        }
-      },
       "/SmartDashboard/Auto Program": {
         "window": {
           "visible": true
@@ -124,5 +119,8 @@
         "open": true
       }
     }
+  },
+  "NetworkTables Info": {
+    "visible": true
   }
 }
