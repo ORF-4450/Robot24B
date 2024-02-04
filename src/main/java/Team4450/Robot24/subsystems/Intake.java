@@ -2,6 +2,7 @@ package Team4450.Robot24.subsystems;
 
 import static Team4450.Robot24.Constants.INTAKE_MOTOR_1;
 import static Team4450.Robot24.Constants.INTAKE_MOTOR_2;
+import static Team4450.Robot24.Constants.INTAKE_SPEED;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkLowLevel.MotorType;
@@ -14,7 +15,7 @@ public class Intake extends SubsystemBase {
     private CANSparkMax motor1 = new CANSparkMax(INTAKE_MOTOR_1, MotorType.kBrushless);
     private CANSparkMax motor2 = new CANSparkMax(INTAKE_MOTOR_2, MotorType.kBrushless);
 
-    private double  motorSpeed = 1;
+    private double  motorSpeed = INTAKE_SPEED;
     private boolean isrunning = false;
 
     public Intake() {
