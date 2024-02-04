@@ -275,7 +275,6 @@ public class DriveBase extends SubsystemBase {
     Util.consoleLog("initial gyro angle: %f", getGyroYaw());
     Util.consoleLog(pose.toString());
 
-    
     odometry.resetPosition(
         pose.getRotation(), //Rotation2d.fromDegrees(getGyroYaw()), //gyro.getAngle()),
         new SwerveModulePosition[] {
