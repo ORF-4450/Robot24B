@@ -21,6 +21,6 @@ When the MaxSwerve drive base prototype was finished and testing began, the MaxS
 code worked first time but the SDS code did not. Development of the MaxSwerve code proceeded
 at a rapid pace. A fix was applied to the SDS code, but due to the rapid advancement of the
 MaxSwerve code, not only for swerve driving, but support for April Tag vision and advanced
-navigation, the SDS fix was never tested. Things quickly reached a point where it made sense 
-to just adopt the MaxSwerve based code into Robot24 and leave the SDS code for a later date 
+navigation, the SDS fix was never tested. Things quickly reached a point where it made sense
+to just adopt the MaxSwerve based code into Robot24 and leave the SDS code for a later date
 or perhaps never. In all honesty, the SDS code is very complex where the MaxSwerve is simpler.
