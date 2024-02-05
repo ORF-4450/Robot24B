@@ -23,7 +23,7 @@ import edu.wpi.first.wpilibj.DriverStation;
  */
 public final class Constants
 {
-	public static String		PROGRAM_NAME = "RAC24-MS2-02.03.24-3";
+	public static String		PROGRAM_NAME = "RAC24-MS2-02.04.24-1";
 
 	public static Robot			robot;
 
@@ -116,7 +116,7 @@ public final class Constants
         public static final boolean kGyroReversed = false;
 
         // Default starting field position in meters for pose tracking. 2024 field.
-        public static final Pose2d	DEFAULT_STARTING_POSE = new Pose2d(1.660, 7.101, Rotation2d.fromDegrees(0));
+        public static final Pose2d	DEFAULT_STARTING_POSE = new Pose2d(.697, 7.153, Rotation2d.fromDegrees(-45));
     }
 
     public static final class ModuleConstants {

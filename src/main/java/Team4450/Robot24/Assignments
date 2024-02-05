@@ -16,8 +16,8 @@ Port	Device			Description
 6       SparkMax        RL steer motor.
 7       SparkMax        RR drive motor.
 8       SparkMax        RR steer motor.
-9       SparkMax        Shooter motor 1.
-10      SparkMax        Shooter motor 2.
+9       SparkMax        Intake motor 1.
+10      SparkMax        Intake motor 2.
 
 PWM Ports
 Port	Device			Description
@@ -96,7 +96,7 @@ Button Name				Function
 Utility GamePad - Buttons
 Button Name				Function
 -----------------------------------------------------------------------------------
-B                       Toggles Shooter Motors.
+B                       Toggles Intake Motors.
 
 
 Dashboard Indicators/Controls

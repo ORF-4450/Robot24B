@@ -14,8 +14,6 @@ import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.util.sendable.SendableRegistry;
 import edu.wpi.first.wpilibj.RobotBase;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.REVPhysicsSim;
 import com.revrobotics.CANSparkLowLevel.MotorType;
@@ -41,7 +39,6 @@ public class MAXSwerveModule implements Sendable {
   private final SparkPIDController turningPIDController;
 
   private double            chassisAngularOffset = 0;
-  //private SwerveModuleState desiredState = new SwerveModuleState(0.0, new Rotation2d());
 
   private double            currentSimVelocity = 0, currentSimPosition = 0, currentSimAngle = 0;
   public String             moduleLocation;
@@ -188,9 +185,6 @@ public class MAXSwerveModule implements Sendable {
           currentSimPosition,
           new Rotation2d(currentSimAngle - chassisAngularOffset));
     
-    //SmartDashboard.putNumber(moduleLocation + " curpos meters", position.distanceMeters);
-    //SmartDashboard.putNumber(moduleLocation + " curpos angle", position.angle.getDegrees());
-
     return position;
   }
 
@@ -260,7 +254,7 @@ public class MAXSwerveModule implements Sendable {
       if (RobotBase.isReal())
           rot = new Rotation2d(turningEncoder.getPosition());
       else
-          rot = new Rotation2d(currentSimAngle); // - chassisAngularOffset);
+          rot = new Rotation2d(currentSimAngle - chassisAngularOffset);
 
       return rot;
   }

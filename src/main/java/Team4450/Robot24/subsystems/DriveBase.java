@@ -78,7 +78,7 @@ public class DriveBase extends SubsystemBase {
   private ChassisSpeeds chassisSpeeds = new ChassisSpeeds(0.0, 0.0, 0.0);
 
   private Pose2d        lastPose;
-  private double        distanceTraveled, yawAngle, lastYawAngle;
+  private double        distanceTraveled, yawAngle, lastYawAngle, startingGyroRotation;
   private boolean       fieldRelative = true, currentBrakeMode = false;
   private boolean       alternateRotation = false, istracking = false;
   private double        trackingRotation = 0;
@@ -130,13 +130,16 @@ public class DriveBase extends SubsystemBase {
   public DriveBase() {
     Util.consoleLog("max vel=%.2f m/s", DriveConstants.kMaxSpeedMetersPerSecond);
 
-    // This thread will wait a bit and then reset the navx while this constructor
-    // continues to run. We do this because we have to wait a bit to reset the
-    // navx after creating it.
+    // This thread will wait until NavX calibration is complete then reset the navx while 
+    // this constructor continues to run. We do this because we can't reset during the
+    // calibration process.
 
     new Thread(() -> {
       try {
-        Thread.sleep(2000);
+        do {
+          Thread.sleep(10);    
+        } while (navx.isCalibrating());
+        //Thread.sleep(2000);
         zeroGyro();
       } catch (Exception e) { }
     }).start();
@@ -167,6 +170,8 @@ public class DriveBase extends SubsystemBase {
     // Set tracking of robot field position at starting point.
 
     resetOdometry(DriveConstants.DEFAULT_STARTING_POSE); 
+
+    //setStartingGyroRotation(DriveConstants.DEFAULT_STARTING_POSE.getRotation().getDegrees());
 
     configureAutoBuilder();
   }
@@ -283,6 +288,8 @@ public class DriveBase extends SubsystemBase {
         pose);
 
       lastPose = pose;
+
+      setStartingGyroRotation(pose.getRotation().getDegrees());
 
       navx.reset();
   }
@@ -491,9 +498,19 @@ public class DriveBase extends SubsystemBase {
   {
     double angle = Math.IEEEremainder((-navx.getAngle()), 360);
 
-    return angle;
+    return angle + startingGyroRotation;
 
     //gyro.getAngle()
+  }
+
+  /**
+   * Set a starting pose rotation for the case where robot is not starting
+   * with bumper parallel to the wall. 
+   * @param degrees - is clockwise (cw or right).
+   */
+  public void setStartingGyroRotation(double degrees)
+  {
+    startingGyroRotation = degrees;
   }
 
   /**
