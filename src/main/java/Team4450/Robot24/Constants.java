@@ -37,8 +37,25 @@ public final class Constants
 	    
 	// Non-drive base motor controller port assignments
 
+    // INTAKE ======
     public static final int     INTAKE_MOTOR_1 = 9;
     public static final int     INTAKE_MOTOR_2 = 10;
+
+    public static final double  INTAKE_SPEED = 1;
+
+    // SHOOTER ======
+    public static final int     SHOOTER_MOTOR_TOP = 11;
+    public static final int     SHOOTER_MOTOR_BOTTOM = 12;
+    public static final int     SHOOTER_MOTOR_FEEDER = 13;
+    public static final int     SHOOTER_MOTOR_PIVOT = 14;
+
+    public static final double  SHOOTER_SPEED = 1;
+    public static final double  SHOOTER_FEED_SPEED = 1;
+
+    // gear ratio of revolutions of shaft to revolutions of assembly
+    public static final double  SHOOTER_PIVOT_FACTOR = 0.1; // TODO: add correct gear ratios
+
+
 
     public static final int     REV_PDB = 0;
 	

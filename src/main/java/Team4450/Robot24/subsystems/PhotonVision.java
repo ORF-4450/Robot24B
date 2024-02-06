@@ -19,7 +19,9 @@ import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -50,7 +52,12 @@ public class PhotonVision extends SubsystemBase
             fieldLayout,
             PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, // strategy to use for tag to pose calculation
             camera, // the PhotonCamera
-            new Transform3d() // a series of transformations from Camera pos. to robot pos. (where camera is on robot)
+
+            // a series of transformations from Camera pos. to robot pos. (where camera is on robot)
+            new Transform3d(
+                new Translation3d(0,0,0.3), // approximate height // TODO: change these values to be correct - Cole W.
+                new Rotation3d(0,0,Math.PI) // in radians pi is 180deg from front
+            )
         );
 
         setLedMode(ledMode);

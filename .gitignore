@@ -169,6 +169,11 @@ logs/*
 simgui*
 *.wpilog
 
+# added just in case the above simgui* isn't catching them:
+simgui-window.json
+simgui.json
+
+
 # Backups
 *.zip
 
