@@ -21,6 +21,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
  * This class hosts functions relating to communicating with the ShuffleBoard driver
  * station application. Primarily, it's periodic function handles the regular update
  * of the "LCD" panel's display of robot status information when the robot is active.
+ * This class supports running LCD updates in a separate thread to reduce overhead
+ * on the main robot control thread.
  */
 public class ShuffleBoard extends SubsystemBase
 {
@@ -51,12 +53,18 @@ public class ShuffleBoard extends SubsystemBase
         //updateDS();
     }
 
+    /**
+     * Update the LCD tab of the Shuffleboard. Do not call if this class is running in it's
+     * own thread.
+     */
     public void updateDS()
 	{    
         if (tracing) FunctionTracer.INSTANCE.enterFunction("ShuffleBoard.updateDS");
       
         Pose2d pose = RobotContainer.driveBase.getPose();
-      
+        
+        // Lines 1 & 2 handled elsewhere.
+
         LCD.printLine(LCD_4, "pose x=%.1fm  y=%.1fm  deg=%.1f  yaw=%.1f", pose.getX(), 
                       pose.getY(), pose.getRotation().getDegrees(), RobotContainer.driveBase.getYaw());
 
@@ -70,7 +78,8 @@ public class ShuffleBoard extends SubsystemBase
     }
 
     /**
-     * Reset the shuffleboard indicators to disabled states.
+     * Reset the shuffleboard indicators to disabled states. Runs in
+     * a separate thread.
      */
     public void resetLEDs()
     {
@@ -79,6 +88,10 @@ public class ShuffleBoard extends SubsystemBase
         notifier.startSingle(0);
     }
 
+    /**
+     * Reset the Shuffleboard indicators to diabled states. Runs on
+     * main thread.
+     */
     private void resetLEDIndicators()
     {
         Util.consoleLog();
@@ -94,6 +107,10 @@ public class ShuffleBoard extends SubsystemBase
         SmartDashboard.putBoolean("Shooter", false);
         SmartDashboard.putBoolean("Alternate Drive", false);
         SmartDashboard.putBoolean("Tracking", false);
+        SmartDashboard.putBoolean("Feeder", false);
+        SmartDashboard.putBoolean("Tracking", false);
+        SmartDashboard.putBoolean("Intake", false);
+
     }
 
     /**

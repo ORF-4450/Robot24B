@@ -123,6 +123,7 @@ Shooter                 boolean         True when shooter motors are running.
 Alternate Drive         boolean         True when alternate driving mode is enabled.
 Tracking                boolean         True when tracking mode is enabled.
 Intake                  boolean         True when intake motors are running.
+feeder                  boolean         True when feeder motor is running.
 
 Drive Base gearbox ratios: MaxSwerve 14 tooth pinion for approx 15.7 f/s or 4.8 m/s.
 

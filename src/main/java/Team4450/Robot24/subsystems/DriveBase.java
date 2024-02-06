@@ -139,7 +139,7 @@ public class DriveBase extends SubsystemBase {
         do {
           Thread.sleep(10);    
         } while (navx.isCalibrating());
-        //Thread.sleep(2000);
+
         zeroGyro();
       } catch (Exception e) { }
     }).start();
@@ -170,8 +170,6 @@ public class DriveBase extends SubsystemBase {
     // Set tracking of robot field position at starting point.
 
     resetOdometry(DriveConstants.DEFAULT_STARTING_POSE); 
-
-    //setStartingGyroRotation(DriveConstants.DEFAULT_STARTING_POSE.getRotation().getDegrees());
 
     configureAutoBuilder();
   }
@@ -310,9 +308,6 @@ public class DriveBase extends SubsystemBase {
     // override joystick value if tracking AND trackingRotation is real
     if (istracking && !Double.isNaN(trackingRotation)) rot = trackingRotation;
 
-    // Have to invert for sim...not sure why.
-    //if (RobotBase.isSimulation()) rot *= -1; Moved to DriveCommand.
-
     if (rateLimit)
     {
       // Convert XY to polar for rate limiting
@@ -368,14 +363,10 @@ public class DriveBase extends SubsystemBase {
     double ySpeedDelivered = ySpeedCommanded * speedLimiter * DriveConstants.kMaxSpeedMetersPerSecond;
     double rotDelivered = currentRotation * speedLimiter * DriveConstants.kMaxAngularSpeed;
 
-    SmartDashboard.putNumber("Rotation Del", rotDelivered);
-
     chassisSpeeds =
         fieldRelative
             ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered, Rotation2d.fromDegrees(getGyroYaw()))
             : new ChassisSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered);
-
-    SmartDashboard.putNumber("Rotation CS", chassisSpeeds.omegaRadiansPerSecond);
 
     driveChassisSpeeds(chassisSpeeds);
   }
@@ -470,15 +461,6 @@ public class DriveBase extends SubsystemBase {
     // TODO: If we change gyros, this will need a solution for 360.
     return RobotContainer.navx.getHeadingInt();
   }
-
-  /**
-   * Returns the heading of the robot.
-   *
-   * @return the robot's heading in degrees, from -180 to 180
-   */
-  // public double getHeading() {
-  //   return Rotation2d.fromDegrees(m_gyro.getAngle()).getDegrees();
-  // }
 
   /**
    * Returns the turn rate of the robot.

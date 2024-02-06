@@ -3,19 +3,12 @@ package Team4450.Robot24;
 
 import static Team4450.Robot24.Constants.*;
 
-import java.io.IOException;
-import java.nio.file.Path;
-
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 
 import Team4450.Robot24.commands.autonomous.AutoEnd;
 import Team4450.Robot24.commands.autonomous.AutoStart;
-
-// import com.pathplanner.lib.PathConstraints;
-// import com.pathplanner.lib.PathPlanner;
-// import com.pathplanner.lib.PathPlannerTrajectory;
 
 import Team4450.Lib.CameraFeed;
 import Team4450.Lib.XboxController;
@@ -32,14 +25,11 @@ import Team4450.Lib.MonitorPDP;
 import Team4450.Lib.NavX;
 import Team4450.Lib.Util;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.math.trajectory.Trajectory;
-import edu.wpi.first.math.trajectory.TrajectoryUtil;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -102,28 +92,12 @@ public class RobotContainer
 	//private MonitorCompressor	monitorCompressorThread;
     private CameraFeed			cameraFeed;
     
-	// Trajectories.
-    //public static Trajectory    		testTrajectory;
+	// Trajectories we load manually.
 	//public static PathPlannerTrajectory	ppTestTrajectory;
-
-    // List of autonomous programs. Any change here must be reflected in getAutonomousCommand()
-    // and setAutoChoices() which appear later in this class.
-	private enum AutoProgram
-	{
-		NoProgram,
-		DriveOut,
-		TestAuto1,
-		TestAuto3
-	}
-
-	// Classes to access drop down lists on Driver Station.
-	//private static SendableChooser<AutoProgram>	autoChooser;
 
 	private static SendableChooser<Command>	autoChooser;
 	
 	private static String 					autonomousCommandName = "none";
-
-	//private static SendableChooser<Integer>		startingPoseChooser;
 
 	/**
 	 * The container for the robot. Contains subsystems, Opertor Interface devices, and commands.
@@ -433,51 +407,6 @@ public class RobotContainer
 	{
 		return autonomousCommandName;
 	}
-
-	// public Command getAutonomousCommand() 
-	// {
-	// 	AutoProgram		program = AutoProgram.NoProgram;
-	// 	Pose2d			startingPose = DEFAULT_STARTING_POSE;
-	// 	Integer			startingPoseIndex = 0;
-	// 	Command			autoCommand = null;
-		
-	// 	Util.consoleLog();
-
-	// 	try
-	// 	{
-	// 		program = autoChooser.getSelected();
-
-	// 		startingPoseIndex = startingPoseChooser.getSelected();
-
-	// 		startingPose = STARTING_POSES[startingPoseIndex];
-	// 	}
-	// 	catch (Exception e)	{ Util.logException(e); }
-		
-	// 	switch (program)
-	// 	{
-	// 		case NoProgram:
-	// 			autoCommand = null;
-	// 			break;
- 				
-	// 		case DriveOut:
-	// 			autoCommand = new DriveOut(driveBase, startingPose, startingPoseIndex);
-	// 			break;
-				
-	// 		case TestAuto1:
-	// 		 	autoCommand = new TestAuto1(driveBase, startingPose);
-	// 		 	break;
- 				
-	// 		case TestAuto3:
-	// 		 	autoCommand = new TestAuto3(driveBase, startingPose);
-	// 		 	break;
- 				
-	// 		case TestAuto4:
-	// 		 	autoCommand = new TestAuto4(driveBase, startingPose);
-	// 		 	break;
-	// 	}
-        
-	// 	return autoCommand;
-	// }
   
     // Configure SendableChooser (drop down list on dashboard) with auto program choices and
 	// send them to SmartDashboard/ShuffleBoard.
@@ -493,7 +422,6 @@ public class RobotContainer
 		NamedCommands.registerCommand("StartIntake", new InstantCommand(intake::start));
 		NamedCommands.registerCommand("StopIntake", new InstantCommand(intake::stop));
 
-
 		// Create a chooser with the PathPlanner Autos located in the PP
 		// folders.
 
@@ -501,35 +429,6 @@ public class RobotContainer
 		
     	SmartDashboard.putData("Auto Program", autoChooser);
 	}
-
-	// 	autoChooser = new SendableChooser<AutoProgram>();
-		
-	// 	SendableRegistry.add(autoChooser, "Auto Program");
-	// 	autoChooser.setDefaultOption("No Program", AutoProgram.NoProgram);
-	// 	autoChooser.addOption("Drive Out", AutoProgram.DriveOut);		
-	// 	autoChooser.addOption("Test Auto 1", AutoProgram.TestAuto1);		
-	// 	autoChooser.addOption("Test Auto 3", AutoProgram.TestAuto3);		
-	// 	autoChooser.addOption("Test Auto 4", AutoProgram.TestAuto4);		
-				
-	// 	SmartDashboard.putData(autoChooser);
-	// }
-  
-    // Configure SendableChooser (drop down list on dashboard) with starting pose choices and
-	// send them to SmartDashboard/ShuffleBoard.
-	
-	// private void setStartingPoses()
-	// {
-	// 	Util.consoleLog();
-
-	// 	startingPoseChooser = new SendableChooser<Integer>();
-		
-	// 	SendableRegistry.add(startingPoseChooser, "Start Position");
-	// 	startingPoseChooser.setDefaultOption("None", 0);
-
-	// 	//for (Integer i = 1; i < STARTING_POSES.length; i++) startingPoseChooser.addOption(i.toString(), i);		
-		
-	// 	SmartDashboard.putData(startingPoseChooser);
-	// }
 
 	/**
 	 *  Get and log information about the current match from the FMS or DS.
@@ -561,43 +460,11 @@ public class RobotContainer
 		// 	pcm.disableCompressor();
 		
 		pdp.clearStickyFaults();
-		//pcm.clearAllStickyFaults();
+		//pcm.clearAllStickyFaults(); // Add back if we use a commpressor.
 		
 		if (monitorPDPThread != null) monitorPDPThread.reset();
     }
          
-    /**
-     * Loads a Pathweaver path file into a trajectory.
-     * @param fileName Name of file. Will automatically look in deploy directory.
-     * @return The path's trajectory.
-     */
-    // public static Trajectory loadTrajectoryFile(String fileName)
-    // {
-    //     Trajectory  trajectory;
-    //     Path        trajectoryFilePath;
-
-    //     try 
-    //     {
-    //       trajectoryFilePath = Filesystem.getDeployDirectory().toPath().resolve("paths/" + fileName);
-
-    //       Util.consoleLog("loading trajectory: %s", trajectoryFilePath);
-          
-    //       trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryFilePath);
-    //     } catch (IOException ex) {
-	// 	  Util.consoleLog("Unable to open trajectory: " + ex.toString());
-    //       throw new RuntimeException("Unable to open trajectory: " + ex.toString());
-    //     }
-
-    //     Util.consoleLog("trajectory loaded: %s", fileName);
-
-    //     return trajectory;
-    // }
-         
-	// private void loadTestTrajectory()
-	// {
-	// 	//testTrajectory = loadTrajectoryFile("Slalom-1.wpilib.json");
-	// }
-
 	/**
      * Loads a PathPlanner path file into a path planner trajectory.
      * @param fileName Name of file. Will automatically look in deploy directory and add the .path ext.

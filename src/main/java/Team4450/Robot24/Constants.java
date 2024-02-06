@@ -23,7 +23,7 @@ import edu.wpi.first.wpilibj.DriverStation;
  */
 public final class Constants
 {
-	public static String		PROGRAM_NAME = "RAC24-MS2-02.04.24-1";
+	public static String		PROGRAM_NAME = "RAC24-MS2-06.04.24-1";
 
 	public static Robot			robot;
 
@@ -54,8 +54,6 @@ public final class Constants
 
     // gear ratio of revolutions of shaft to revolutions of assembly
     public static final double  SHOOTER_PIVOT_FACTOR = 0.1; // TODO: add correct gear ratios
-
-
 
     public static final int     REV_PDB = 0;
 	
@@ -132,8 +130,9 @@ public final class Constants
 
         public static final boolean kGyroReversed = false;
 
-        // Default starting field position in meters for pose tracking. 2024 field.
-        public static final Pose2d	DEFAULT_STARTING_POSE = new Pose2d(.697, 7.153, Rotation2d.fromDegrees(-45));
+        // Default starting field position in meters for pose tracking. 2024 field. 
+        // TODO: This likely will need futher definition as to how we will manage starting points.
+        public static final Pose2d	DEFAULT_STARTING_POSE = new Pose2d(.697, 7.153, Rotation2d.fromDegrees(0));
     }
 
     public static final class ModuleConstants {

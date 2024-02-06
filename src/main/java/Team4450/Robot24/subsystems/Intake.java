@@ -19,8 +19,6 @@ public class Intake extends SubsystemBase {
     private boolean isrunning = false;
 
     public Intake() {
-        // motor1.setInverted(true);
-
         motor2.follow(motor1);
 
         // note: we should probably use the `subsystem_property` format in

@@ -27,6 +27,13 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
+/**
+ * A class that wraps the PhotonVision system running on a coprocessor
+ * and adds utility functions to support using vision.
+ * Note: Communication between this class and the PV on the coprocessor
+ * is handled through the Network Tables and the tables are wrapped by
+ * by PhotonLib.
+ */
 public class PhotonVision extends SubsystemBase
 {
     private PhotonCamera            camera = new PhotonCamera("4450-LL");
@@ -158,7 +165,6 @@ public class PhotonVision extends SubsystemBase
         else
             return 0;
     }
-
 
     /**
      * Returns the Fiducial ID of the current best target, you should call
