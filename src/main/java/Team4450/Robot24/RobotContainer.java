@@ -490,6 +490,9 @@ public class RobotContainer
 		
 		NamedCommands.registerCommand("AutoStart", new AutoStart());
 		NamedCommands.registerCommand("AutoEnd", new AutoEnd());
+		NamedCommands.registerCommand("StartIntake", new InstantCommand(intake::start));
+		NamedCommands.registerCommand("StopIntake", new InstantCommand(intake::stop));
+
 
 		// Create a chooser with the PathPlanner Autos located in the PP
 		// folders.

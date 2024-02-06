@@ -18,6 +18,10 @@ Port	Device			Description
 8       SparkMax        RR steer motor.
 9       SparkMax        Intake motor 1.
 10      SparkMax        Intake motor 2.
+11      SparkMax        Shooter motor 1.
+12      SparkMax        Shooter motor 2.
+13      SparkMax        Shooter feeder motor.
+14      SparkMax        Shooter pivot motor.
 
 PWM Ports
 Port	Device			Description
